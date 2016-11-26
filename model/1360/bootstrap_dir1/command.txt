@@ -1,1 +1,0 @@
-/usr/bin/bootstrap 1360.ctl -threads=90 -samples=500 -seed=12345 -stratify_on=STUD -nm_version=nm73
