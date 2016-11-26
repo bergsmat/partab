@@ -1,0 +1,1 @@
+/usr/bin/vpc 1360.ctl -samples=500 -rplots=1

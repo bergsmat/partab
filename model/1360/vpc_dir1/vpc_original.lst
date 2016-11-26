@@ -1,0 +1,300 @@
+Thu Nov 17 04:37:40 EST 2016
+$PROBLEM    //like/1341//but/diagonal omega//
+$INPUT      C ID SEQ TIME TAD TAFD EVID CMT AMT SS II LDOS DV MDV BLQ
+            LLOQ OBST IMPT AGE RACE SEX HGT WGT BILI AST ALT KETO TRAS
+            CAPE TADG STUD RTE HV LEGA
+$DATA      PUMA-PCS-101_ex3.csv IGNORE=(C=C,TADG=1)
+$SUBROUTINE ADVAN4 TRANS4
+$PK 
+ DD = THETA(12)**TRAS * THETA(13)**CAPE * THETA(15)**KETO
+ LV = (BILI/10)**THETA(10) * (LOG(ALT)/3)**THETA(11)
+ CL = THETA(1)*EXP(ETA(1)) * (WGT/70) **THETA(4) * (AGE/53)**THETA(9) * LV * DD
+ V2 = THETA(2)*EXP(ETA(2)) * (WGT/70) **THETA(5) * (AGE/53)**THETA(14)
+ KA = THETA(3)*EXP(ETA(3)) * (AGE/53)**THETA(16)
+ Q  = THETA(6)             * (WGT/70) **THETA(4)
+ V3 = THETA(7)             * (WGT/70) **THETA(5)
+ S2 =V2/1000
+ ALAG1 = THETA(8)
+ 
+$ERROR 
+ Y=F*(1+ERR(1)) + ERR(2)
+ IPRE=F
+
+$THETA  (0,194.586) ; CL(L/h)
+ (0,4433.58) ; V2 (L)
+ (0,0.391314) ; KA
+ (0,0.380553) ; WT on CL
+ (0,0.462064) ; WT on V
+ (0,51.9863) ; Q (L/h)
+ (0,1439.35) ; V3 (L)
+ (0,0.726992) ; alag1
+ -0.101811 ; age on CL
+ -0.00804501 ; bili
+ 0.055915 ; alt
+ 0.882252 ; tras
+ 0.986121 ; cap
+ 1.66661 ; age on V
+ 0.172123 ; keto
+ 1.42283 ; age on Ka
+;
+$OMEGA  0.190088
+ 0.59465
+ 0.71699
+;.01 .1
+;.01 .01 .1
+;.01 .01 .01 .1
+;.01 .01 .01 .01 .1
+$SIGMA  0.10434
+ 2.69559
+$ESTIMATION METHOD=1 INTERACTION NOABORT PRINT=5 MAXEVALS=0
+$TABLE      ID MDV TIME DV ONEHEADER NOPRINT NOAPPEND FILE=npctab.dta
+
+
+NM-TRAN MESSAGES
+  
+ WARNINGS AND ERRORS (IF ANY) FOR PROBLEM    1
+             
+ (WARNING  2) NM-TRAN INFERS THAT THE DATA ARE POPULATION.
+ CREATING MUMODEL ROUTINE...
+
+License Registered to: Pharsight Corporation (Certara)
+Expiration Date:    14 MAR 2017
+Current Date:       17 NOV 2016
+Days until program expires : 122
+1NONLINEAR MIXED EFFECTS MODEL PROGRAM (NONMEM) VERSION 7.2.0
+ ORIGINALLY DEVELOPED BY STUART BEAL, LEWIS SHEINER, AND ALISON BOECKMANN
+ CURRENT DEVELOPERS ARE ROBERT BAUER, ICON DEVELOPMENT SOLUTIONS,
+ AND ALISON BOECKMANN. IMPLEMENTATION, EFFICIENCY, AND STANDARDIZATION
+ PERFORMED BY NOUS INFOSYSTEMS.
+ 
+ PROBLEM NO.:         1
+ //like/1341//but/diagonal omega//                                       
+0DATA CHECKOUT RUN:              NO 
+ DATA SET LOCATED ON UNIT NO.:    2
+ THIS UNIT TO BE REWOUND:        NO 
+ NO. OF DATA RECS IN DATA SET:    10191
+ NO. OF DATA ITEMS IN DATA SET:  34
+ ID DATA ITEM IS DATA ITEM NO.:   2
+ DEP VARIABLE IS DATA ITEM NO.:  13
+ MDV DATA ITEM IS DATA ITEM NO.: 14
+0INDICES PASSED TO SUBROUTINE PRED:
+   7   4   9   0  10  11   8   0   0   0   0
+0LABELS FOR DATA ITEMS:
+ C ID SEQ TIME TAD TAFD EVID CMT AMT SS II LDOS DV MDV BLQ LLOQ OBST IMPT AGE RACE SEX HGT WGT BILI AST ALT KETO TRAS CAPE
+ TADG STUD RTE HV LEGA
+0FORMAT FOR DATA:
+ (3(9E8.0/),7E8.0)                                                               
+ 
+ TOT. NO. OF OBS RECS:     7713
+ TOT. NO. OF INDIVIDUALS:    596
+0LENGTH OF THETA:  16
+0DEFAULT THETA BOUNDARY TEST OMITTED:    NO 
+0OMEGA HAS SIMPLE DIAGONAL FORM WITH DIMENSION:   3
+0DEFAULT OMEGA BOUNDARY TEST OMITTED:    NO 
+0SIGMA HAS SIMPLE DIAGONAL FORM WITH DIMENSION:   2
+0DEFAULT SIGMA BOUNDARY TEST OMITTED:    NO 
+0INITIAL ESTIMATE OF THETA:
+ LOWER BOUND    INITIAL EST    UPPER BOUND
+  0.0000E+00     0.1946E+03     0.1000E+07
+  0.0000E+00     0.4434E+04     0.1000E+07
+  0.0000E+00     0.3913E+00     0.1000E+07
+  0.0000E+00     0.3806E+00     0.1000E+07
+  0.0000E+00     0.4621E+00     0.1000E+07
+  0.0000E+00     0.5199E+02     0.1000E+07
+  0.0000E+00     0.1439E+04     0.1000E+07
+  0.0000E+00     0.7270E+00     0.1000E+07
+ -0.1000E+07    -0.1018E+00     0.1000E+07
+ -0.1000E+07    -0.8045E-02     0.1000E+07
+ -0.1000E+07     0.5591E-01     0.1000E+07
+ -0.1000E+07     0.8823E+00     0.1000E+07
+ -0.1000E+07     0.9861E+00     0.1000E+07
+ -0.1000E+07     0.1667E+01     0.1000E+07
+ -0.1000E+07     0.1721E+00     0.1000E+07
+ -0.1000E+07     0.1423E+01     0.1000E+07
+0INITIAL ESTIMATE OF OMEGA:
+ 0.1901E+00
+ 0.0000E+00   0.5947E+00
+ 0.0000E+00   0.0000E+00   0.7170E+00
+0INITIAL ESTIMATE OF SIGMA:
+ 0.1043E+00
+ 0.0000E+00   0.2696E+01
+0ESTIMATION STEP OMITTED:          YES 
+ CONDITIONAL ESTIMATES USED:       YES 
+ CENTERED ETA:                      NO 
+ EPS-ETA INTERACTION:              YES 
+ LAPLACIAN OBJ. FUNC.:              NO 
+0TABLES STEP OMITTED:    NO 
+ NO. OF TABLES:           1
+0-- TABLE   1 --
+04 COLUMNS APPENDED:     NO 
+ PRINTED:                NO 
+ HEADERS:               ONE
+ FILE TO BE FORWARDED:   NO 
+0USER-CHOSEN ITEMS:
+ ID MDV TIME DV
+ 
+ THE FOLLOWING LABELS ARE EQUIVALENT
+ PRED=PREDI
+ RES=RESI
+ WRES=WRESI
+1DOUBLE PRECISION PREDPP VERSION 7.2.0     
+ 
+ TWO COMPARTMENT MODEL WITH FIRST-ORDER ABSORPTION (ADVAN4)
+0MAXIMUM NO. OF BASIC PK PARAMETERS:   5
+0BASIC PK PARAMETERS (AFTER TRANSLATION):
+   BASIC PK PARAMETER NO.  1: ELIMINATION RATE (K)
+   BASIC PK PARAMETER NO.  2: CENTRAL-TO-PERIPH. RATE (K23)
+   BASIC PK PARAMETER NO.  3: PERIPH.-TO-CENTRAL RATE (K32)
+   BASIC PK PARAMETER NO.  5: ABSORPTION RATE (KA)
+ TRANSLATOR WILL CONVERT PARAMETERS 
+ CL, V2, Q, V3 TO K, K23, K32 (TRANS4)
+0COMPARTMENT ATTRIBUTES 
+ COMPT. NO.   FUNCTION   INITIAL    ON/OFF      DOSE      DEFAULT    DEFAULT
+                         STATUS     ALLOWED    ALLOWED    FOR DOSE   FOR OBS.
+    1         DEPOT        OFF        YES        YES        YES        NO 
+    2         CENTRAL      ON         NO         YES        NO         YES
+    3         PERIPH.      ON         NO         YES        NO         NO 
+    4         OUTPUT       OFF        YES        NO         NO         NO 
+1
+ ADDITIONAL PK PARAMETERS - ASSIGNMENT OF ROWS IN GG
+ COMPT. NO.                             INDICES
+              SCALE      BIOAVAIL.   ZERO-ORDER  ZERO-ORDER  ABSORB
+                         FRACTION    RATE        DURATION    LAG  
+    1           *           *           *           *           7
+    2           6           *           *           *           *
+    3           *           *           *           *           *
+    4           *           -           -           -           -
+             - PARAMETER IS NOT ALLOWED FOR THIS MODEL
+             * PARAMETER IS NOT SUPPLIED BY PK SUBROUTINE;
+               WILL DEFAULT TO ONE IF APPLICABLE
+0DATA ITEM INDICES USED BY PRED ARE:
+   EVENT ID DATA ITEM IS DATA ITEM NO.:      7
+   TIME DATA ITEM IS DATA ITEM NO.:          4
+   DOSE AMOUNT DATA ITEM IS DATA ITEM NO.:   9
+   STEADY STATE DATA ITEM IS DATA ITEM NO.: 10
+   INTERVAL DATA ITEM IS DATA ITEM NO.:     11
+   COMPT. NO. DATA ITEM IS DATA ITEM NO.:    8
+ 
+0PK SUBROUTINE CALLED WITH EVERY EVENT RECORD.
+ PK SUBROUTINE NOT CALLED AT NONEVENT (ADDITIONAL OR LAGGED) DOSE TIMES.
+0ERROR SUBROUTINE CALLED WITH EVERY EVENT RECORD.
+1
+ 
+ 
+ #TBLN:      1
+ #METH: First Order Conditional Estimation with Interaction (Evaluation)
+ 
+1
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ************************************************************************************************************************
+ ********************                                                                                ********************
+ ********************         FIRST ORDER CONDITIONAL ESTIMATION WITH INTERACTION (EVALUATION)       ********************
+ #OBJT:**************                       MINIMUM VALUE OF OBJECTIVE FUNCTION                      ********************
+ ********************                                                                                ********************
+ ************************************************************************************************************************
+ 
+
+
+
+
+
+ #OBJV:********************************************    48961.744       **************************************************
+1
+ ************************************************************************************************************************
+ ********************                                                                                ********************
+ ********************         FIRST ORDER CONDITIONAL ESTIMATION WITH INTERACTION (EVALUATION)       ********************
+ ********************                             FINAL PARAMETER ESTIMATE                           ********************
+ ********************                                                                                ********************
+ ************************************************************************************************************************
+ 
+
+
+ THETA - VECTOR OF FIXED EFFECTS PARAMETERS   *********
+
+
+         TH 1      TH 2      TH 3      TH 4      TH 5      TH 6      TH 7      TH 8      TH 9      TH10      TH11      TH12     
+          TH13      TH14      TH15      TH16     
+ 
+         1.95E+02  4.43E+03  3.91E-01  3.81E-01  4.62E-01  5.20E+01  1.44E+03  7.27E-01 -1.02E-01 -8.05E-03  5.59E-02  8.82E-01
+          9.86E-01  1.67E+00  1.72E-01  1.42E+00
+ 
+
+
+ OMEGA - COV MATRIX FOR RANDOM EFFECTS - ETAS  ********
+
+
+            ETA1      ETA2      ETA3   
+ 
+ ETA1
++        1.90E-01
+ 
+ ETA2
++        0.00E+00  5.95E-01
+ 
+ ETA3
++        0.00E+00  0.00E+00  7.17E-01
+ 
+
+
+ SIGMA - COV MATRIX FOR RANDOM EFFECTS - EPSILONS  ****
+
+
+            EPS1      EPS2   
+ 
+ EPS1
++        1.04E-01
+ 
+ EPS2
++        0.00E+00  2.70E+00
+ 
+1
+
+
+ OMEGA - CORR MATRIX FOR RANDOM EFFECTS - ETAS  *******
+
+
+            ETA1      ETA2      ETA3   
+ 
+ ETA1
++        4.36E-01
+ 
+ ETA2
++        0.00E+00  7.71E-01
+ 
+ ETA3
++        0.00E+00  0.00E+00  8.47E-01
+ 
+
+
+ SIGMA - CORR MATRIX FOR RANDOM EFFECTS - EPSILONS  ***
+
+
+            EPS1      EPS2   
+ 
+ EPS1
++        3.23E-01
+ 
+ EPS2
++        0.00E+00  1.64E+00
+ 
+Stop Time:
+Thu Nov 17 04:37:45 EST 2016
