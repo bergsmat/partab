@@ -9,6 +9,8 @@ source('contains.R')
 source('as.best.R')
 source('xpath.R')
 source('halfmatrix.R')
+source('bootstrap.R')
+source('partab.R')
 options(project='model')
 
 1360 %>% xpath('//etashrink/row/col')
@@ -22,7 +24,7 @@ options(project='model')
 1360 %>% xpath('//sigma/row/col') %>% as.halfmatrix %>% as.data.frame
 1360 %>% as.bootstrap
 
-1360 %>% as.partab
+1360 %>% as.partab(F)
 
 
 

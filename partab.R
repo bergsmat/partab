@@ -12,7 +12,7 @@ val_name <- function(x, xpath, param, moment,...){
   dat <- data.frame(
     stringsAsFactors=FALSE,
     par = x %>% xpath(valpath) %>% padded(2),
-    x = x %>% xpath(tokenpath)
+    x = x %>% xpath(tokenpath) %>% as.numeric
   )
   dat %<>% mutate(par = paste(sep='_',param,par))
   names(dat)[names(dat) == 'x'] <- moment
@@ -30,12 +30,16 @@ row_col <- function(x, xpath, param, moment,...){
 
 as.partab.modelname <- function(
   x,
-  strip.namespace=TRUE,
-  skip=28,
-  check.names=FALSE,
+  verbose=TRUE,
   lo='2.5',
   hi='97.5',
-  verbose=TRUE,
+  strip.namespace=TRUE,
+  skip=28,
+  check.names=FALSE,  
+  project = if(is.null(opt)) getwd() else opt, 
+  opt = getOption('project'),
+  rundir = file.path(project,x), 
+  file = file.path(rundir,paste0(x,'.meta')), 
   ...
 ){
   y <- x %>% as.xml_document(strip.namespace=strip.namespace,...)
@@ -78,6 +82,13 @@ as.partab.modelname <- function(
     }
   }
   param %<>% select(-offdiag)
+  if(!file.exists(file)){
+    d <- data.frame(par=param$par,symbol=NA_character_,label=NA_character_)
+    write.csv(d,file=file,row.names=F,quote=F,na='.')
+    message('edit contents of ',file)
+  }
+  meta <- read.csv(na.strings=c('.','','NA'), as.is=T,file)
+  param %<>% left_join(meta,by='par')
   param
 }
 
