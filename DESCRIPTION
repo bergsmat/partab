@@ -1,0 +1,16 @@
+Package: pharmval
+Type: Package
+Title: An Integrated Pharmacometric Data Format
+Version: 0.1
+Date: 2016-07-09
+Author: Tim Bergsma
+Maintainer: Tim Bergsma <bergsmat@gmail.com>
+Description: Stores inputs, outputs, and metadata for pharmacometric analyses in
+    one object.
+License: GPL-3
+LazyData: TRUE
+Imports:
+    dplyr,
+    tidyr,
+    magrittr
+RoxygenNote: 5.0.1

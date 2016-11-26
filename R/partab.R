@@ -87,6 +87,7 @@ as.partab.modelname <- function(
     write.csv(d,file=file,row.names=F,quote=F,na='.')
     message('edit contents of ',file)
   }
+  if(verbose)message('merging ',file)
   meta <- read.csv(na.strings=c('.','','NA'), as.is=T,file)
   param %<>% left_join(meta,by='par')
   param

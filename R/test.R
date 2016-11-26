@@ -24,7 +24,7 @@ options(project='model')
 1360 %>% xpath('//sigma/row/col') %>% as.halfmatrix %>% as.data.frame
 1360 %>% as.bootstrap
 
-1360 %>% as.partab(F)
+1360 %>% as.partab
 
 
 
