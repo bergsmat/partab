@@ -1,6 +1,44 @@
+#' Create Model Parameter Table in Project Context.
+#'
+#' Creates a model parameter table in project context.
+#' 
+#' x can be numeric or character model name, assuming project is identified by argument or option.
+#' @param x object of dispatch
+#' @param ... arguments to methods
+#' @seealso \code{\link{as.partab.modelname}}
+#' @examples
+#' \dontrun{
+#' options('project') <- 'model'
+#' 1045 %>% as.partab
+#' }
+#' @export
 as.partab <- function(x,...)UseMethod('as.partab')
+#' Create Model Parameter Table from partab
+#'
+#' Creates a model parameter table from a partab object.
+#' 
+#' Just returns the object unmodified.
+#' @param x partab
+#' @param ... arguments to methods
+#' @export
 as.partab.partab <- function(x,...)x
+#' Create Model Parameter Table from Number.
+#'
+#' Creates a model parameter table from a number.
+#' 
+#' Just coerces to character and calls as.partab again.
+#' @param x numeric
+#' @param ... arguments to methods
+#' @export
 as.partab.numeric  <- function(x,...)as.partab(as.character(x),...)
+#' Create Model Parameter Table from Character
+#'
+#' Creates a model parameter table from a character string.
+#' 
+#' Reclassifies x as a modelname and calls as.partab again.
+#' @param x numeric
+#' @param ... arguments to methods
+#' @export
 as.partab.character <- function(x,...){
   class(x) <-  'modelname'
   as.partab(x,...)
@@ -28,6 +66,35 @@ row_col <- function(x, xpath, param, moment,...){
   dat
 }
 
+#' Create a Parameter Table from Model name.
+#'
+#' Creates a parameter table from a model name. Pass the project argument or set 
+#' the project option.  
+#' 
+#' Normally you can just call the generic.
+#' @param x a model name (numeric or character)
+#' @param verbose set FALSE to suppress messages
+#' @param lo the PsN bootstrap lower confidence limit (\%)
+#' @param hi the PsN bootstrap upper confidence limit (\%)
+#' @param strip.namespace whether to strip e.g. nm: from xml elements for easier xpath syntax
+#' @param skip number of lines to skip in bootstrap_results.csv
+#' @param check.names passed to bootstrap reader
+#' @param project parent directory of model directories
+#' @param opt alternative argument for setting project
+#' @param rundir specific model directory
+#' @param metafile metadata for parameter table; will be created if missing (edit and re-run)
+#' @param digits limits numerics to significant digits if specified
+#' @param ci combine bootstrap lo and hi into an enclosed interval
+#' @param sep separator for bootstrap interval
+#' @param open first character for bootstrap interval
+#' @param close last character for bootstrap interval
+#' @param ... passed to other functions
+#' @return data.frame
+#' @import magrittr
+#' @import dplyr
+#' @export
+
+
 as.partab.modelname <- function(
   x,
   verbose=TRUE,
@@ -39,7 +106,12 @@ as.partab.modelname <- function(
   project = if(is.null(opt)) getwd() else opt, 
   opt = getOption('project'),
   rundir = file.path(project,x), 
-  file = file.path(rundir,paste0(x,'.meta')), 
+  metafile = file.path(rundir,paste0(x,'.meta')),
+  digits = numeric(0),
+  ci = FALSE,
+  open = '(',
+  close = ')',
+  sep = ', ',
   ...
 ){
   y <- x %>% as.xml_document(strip.namespace=strip.namespace,...)
@@ -82,13 +154,23 @@ as.partab.modelname <- function(
     }
   }
   param %<>% select(-offdiag)
-  if(!file.exists(file)){
-    d <- data.frame(par=param$par,symbol=NA_character_,label=NA_character_)
-    write.csv(d,file=file,row.names=F,quote=F,na='.')
-    message('edit contents of ',file)
+  if(length(signif)){
+    param %<>% mutate(estimate = estimate %>% signif(digits))
+    param %<>% mutate(se = se %>% signif(digits))
+    param %<>% mutate(lo = lo %>% signif(digits))
+    param %<>% mutate(hi = hi %>% signif(digits))
   }
-  if(verbose)message('merging ',file)
-  meta <- read.csv(na.strings=c('.','','NA'), as.is=T,file)
+  if(ci){
+    param %<>% mutate(ci = paste(sep=sep, lo, hi)) %>% enclose(open,close)
+    param %<>% select(-lo, -hi)
+  }
+  if(!file.exists(metafile)){
+    d <- data.frame(par=param$par,symbol=NA_character_,label=NA_character_)
+    write.csv(d,file=metafile,row.names=F,quote=F,na='.')
+    message('edit contents of ',metafile)
+  }
+  if(verbose)message('merging ',metafile)
+  meta <- read.csv(na.strings=c('.','','NA'), as.is=T,metafile)
   param %<>% left_join(meta,by='par')
   param
 }

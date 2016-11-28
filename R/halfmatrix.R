@@ -1,4 +1,3 @@
-
 is.square <- function(x,...)UseMethod('is.square')
 is.square.matrix <- function(x,...)dim(x)[[1]]==dim(x)[[2]]
 ord <- function(x,...)UseMethod('ord')
@@ -34,6 +33,7 @@ as.matrix.halfmatrix <- function(x,...){
   y[is.na(y)] <- t(y)[is.na(y)]
   y  
 }
+
 as.data.frame.halfmatrix <- function(x,...){
   d <- ord.halfmatrix(x)
   y <- matrix(nrow=d,ncol=d)
