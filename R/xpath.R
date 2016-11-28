@@ -22,10 +22,10 @@ as.xml_document.character <- function(x,...){
 #' Create xml_document From Filepath
 #'
 #' Creates an xml_document from filepath
+#' @import xml2
 #' @param x filepath
 #' @param strip.namespace whether to strip e.g. nm: from xml elements
 #' @param ... passed arguments
-#' @import xml2
 #' @export
 #' @return xml_document
 
@@ -102,13 +102,13 @@ xpath.default <- function(x,...)xpath(as.xml_document(x),...)
 #' Evaluates an xpath expression for a given document.
 #' 
 #' The resulting nodeset is scavenged for text, and coerced to best of numeric or character.
+#' @import magrittr
+#' @import xml2
 #' @param x xml_document
 #' @param xpath xpath expression to evaluate
 #' @param ... passed arguments
 #' @seealso \code{\link{xpath.default}}
 #' @export
-#' @import magrittr
-#' @import xml2
 #' @return vector
 
 xpath.xml_document <- function(x, xpath,...){

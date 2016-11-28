@@ -72,6 +72,8 @@ row_col <- function(x, xpath, param, moment,...){
 #' the project option.  
 #' 
 #' Normally you can just call the generic.
+#' @import magrittr
+#' @import dplyr
 #' @param x a model name (numeric or character)
 #' @param verbose set FALSE to suppress messages
 #' @param lo the PsN bootstrap lower confidence limit (\%)
@@ -88,10 +90,9 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param sep separator for bootstrap interval
 #' @param open first character for bootstrap interval
 #' @param close last character for bootstrap interval
+#' @param format format numerics as character
 #' @param ... passed to other functions
 #' @return data.frame
-#' @import magrittr
-#' @import dplyr
 #' @export
 
 
@@ -112,10 +113,12 @@ as.partab.modelname <- function(
   open = '(',
   close = ')',
   sep = ', ',
+  format = ci,
   ...
 ){
-  y <- x %>% as.xml_document(strip.namespace=strip.namespace,...)
-  z <- try(x %>% as.bootstrap(skip=skip,check.names=check.names,lo=lo,hi=hi,...))
+  if(verbose)message('searching ',rundir)
+  y <- x %>% as.xml_document(strip.namespace=strip.namespace,verbose=verbose,project=project,...)
+  z <- try(x %>% as.bootstrap(skip=skip,check.names=check.names,lo=lo,hi=hi,verbose=verbose,project=project,...))
   theta   <- y %>% val_name('theta',  'theta','estimate')
   thetase <- y %>% val_name('thetase','theta','se')
   sigma   <- y %>% row_col('sigma',   'sigma','estimate')
@@ -152,16 +155,25 @@ as.partab.modelname <- function(
       param$lo[i] <- z$lo
       param$hi[i] <- z$hi
     }
+  }else{
+    param$lo <- NA_real_
+    param$hi <- NA_real_
   }
   param %<>% select(-offdiag)
-  if(length(signif)){
+  if(length(digits)){
     param %<>% mutate(estimate = estimate %>% signif(digits))
     param %<>% mutate(se = se %>% signif(digits))
     param %<>% mutate(lo = lo %>% signif(digits))
     param %<>% mutate(hi = hi %>% signif(digits))
   }
+  if(format){
+    param %<>% mutate(estimate = estimate %>% as.character)
+    param %<>% mutate(se = se %>% as.character)
+    param %<>% mutate(lo = lo %>% as.character)
+    param %<>% mutate(hi = hi %>% as.character)
+  }
   if(ci){
-    param %<>% mutate(ci = paste(sep=sep, lo, hi)) %>% enclose(open,close)
+    param %<>% mutate(ci = paste(sep=sep, lo, hi) %>% enclose(open,close))
     param %<>% select(-lo, -hi)
   }
   if(!file.exists(metafile)){

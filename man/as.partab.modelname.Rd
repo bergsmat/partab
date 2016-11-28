@@ -9,7 +9,7 @@
   (is.null(opt)) getwd() else opt, opt = getOption("project"),
   rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
   ".meta")), digits = numeric(0), ci = FALSE, open = "(", close = ")",
-  sep = ", ", ...)
+  sep = ", ", format = ci, ...)
 }
 \arguments{
 \item{x}{a model name (numeric or character)}
@@ -43,6 +43,8 @@
 \item{close}{last character for bootstrap interval}
 
 \item{sep}{separator for bootstrap interval}
+
+\item{format}{format numerics as character}
 
 \item{...}{passed to other functions}
 }

@@ -24,17 +24,19 @@ as.bootstrap.character <- function(x,...){
 #'
 #' Creates a bootstrap table from a PsN bootstrap results csv filepath.
 #' 
+#' @import magrittr
 #' @param x object of dispatch
 #' @param skip number of lines to skip in bootstrap_results.csv
 #' @param check.names passed to bootstrap reader
 #' @param lo the PsN bootstrap lower confidence limit (\%)
 #' @param hi the PsN bootstrap upper confidence limit (\%)
+#' @param verbose display messages
 #' @param ... arguments to methods
-#' @import magrittr
 #' @export
 #' @return data.frame
 
-as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='2.5',hi='97.5',...){
+as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='2.5',hi='97.5',verbose=TRUE,...){
+  if(verbose) message('reading ',x)
   x <- x %>% 
     read.csv(skip=skip,check.names=check.names,as.is=TRUE,...)
   y <- x
@@ -82,6 +84,6 @@ as.bootstrap.modelname <- function(
   )
   file <- rev(bootcsv)[[1]]
   class(file) <- 'filepath'
-  as.bootstrap(file)
+  as.bootstrap(file,...)
 }
 

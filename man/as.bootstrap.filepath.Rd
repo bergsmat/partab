@@ -5,7 +5,7 @@
 \title{Create a Bootstrap Table from Filepath}
 \usage{
 \method{as.bootstrap}{filepath}(x, skip = 28, check.names = FALSE,
-  lo = "2.5", hi = "97.5", ...)
+  lo = "2.5", hi = "97.5", verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{object of dispatch}
@@ -17,6 +17,8 @@
 \item{lo}{the PsN bootstrap lower confidence limit (\%)}
 
 \item{hi}{the PsN bootstrap upper confidence limit (\%)}
+
+\item{verbose}{display messages}
 
 \item{...}{arguments to methods}
 }
