@@ -3,6 +3,7 @@
 #' Coerces to docx
 #' @param x object of dispatch
 #' @param ... arguments to methods
+#' @seealso \code{link{as.docx.data.frame}}
 #' @return docx
 #' @export
 
@@ -30,6 +31,10 @@ as.docx.docx <- function(x,...)x
 #' @seealso \code{\link{addFlexTable}}
 #' @seealso \code{\link{FlexTable}}
 #' @return docx
+#' @examples
+#' options('project') <- '../project/model'
+#' 1001 %>% as.partab %>% as.docx %>% as.file('../project/model/1001/1001.docx')
+
 #' @export
 as.docx.data.frame <- function(
   x,

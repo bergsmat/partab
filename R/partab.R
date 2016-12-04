@@ -7,10 +7,8 @@
 #' @param ... arguments to methods
 #' @seealso \code{\link{as.partab.modelname}}
 #' @examples
-#' \dontrun{
-#' options('project') <- 'model'
-#' 1045 %>% as.partab
-#' }
+#' options('project') <- '../project/model'
+#' 1001 %>% as.partab
 #' @export
 as.partab <- function(x,...)UseMethod('as.partab')
 #' Create Model Parameter Table from partab
