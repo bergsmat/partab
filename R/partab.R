@@ -71,54 +71,91 @@ row_col <- function(x, xpath, param, moment,...){
 #' Creates a parameter table from a model name. Pass the project argument or set 
 #' the project option.  
 #' 
-#' Normally you can just call the generic.
+#' Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
 #' @import magrittr
 #' @import dplyr
 #' @param x a model name (numeric or character)
 #' @param verbose set FALSE to suppress messages
 #' @param lo the PsN bootstrap lower confidence limit (\%)
 #' @param hi the PsN bootstrap upper confidence limit (\%)
-#' @param strip.namespace whether to strip e.g. nm: from xml elements for easier xpath syntax
-#' @param skip number of lines to skip in bootstrap_results.csv
-#' @param check.names passed to bootstrap reader
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory
 #' @param metafile metadata for parameter table; will be created if missing (edit and re-run)
+#' @param xmlfile path to xml file
+#' @param ctlfile path to control stream
+#' @param bootcsv path to PsN bootstrap_results.csv
+#' @param strip.namespace whether to strip e.g. nm: from xml elements for easier xpath syntax
+#' @param skip number of lines to skip in bootstrap_results.csv
+#' @param check.names passed to bootstrap reader
 #' @param digits limits numerics to significant digits if specified
 #' @param ci combine bootstrap lo and hi into an enclosed interval
 #' @param sep separator for bootstrap interval
 #' @param open first character for bootstrap interval
 #' @param close last character for bootstrap interval
 #' @param format format numerics as character
+#' @param fields metadata fields to read from control stream if no metafile
+#' @param relative transform standard errors to relative standard errors: rse replaces se
+#' @param percent if relative is true, express as percent (else ignore): prse replaces se
+#' @param quote quote csv values when creating template metafile
+#' @param na how to encode NA in metafile
+#' @param na.strings what to read as NA in metafile 
+#' @param as.is passed to read.csv for reading metafile
+#' @param nonzero limit random effects to those with nonzero estimates
 #' @param ... passed to other functions
-#' @return data.frame
+#' @seealso \code{\link{as.xml_document.modelname}}
+#' @seealso \code{\link{as.bootstrap.modelname}}
+#' @seealso \code{\link{as.nmctl.modelname}}
+#' @seealso \code{\link{write.csv}}
+#' @seealso \code{\link{read.csv}}
+
+#' @return object of class partab, data.frame
 #' @export
 
 
 as.partab.modelname <- function(
   x,
   verbose=TRUE,
-  lo='2.5',
-  hi='97.5',
-  strip.namespace=TRUE,
-  skip=28,
-  check.names=FALSE,  
+  lo='5',
+  hi='95',
   project = if(is.null(opt)) getwd() else opt, 
   opt = getOption('project'),
   rundir = file.path(project,x), 
   metafile = file.path(rundir,paste0(x,'.meta')),
+  xmlfile = file.path(rundir,paste0(x,'.xml')),
+  ctlfile = file.path(rundir,paste0(x,'.ctl')),
+  bootcsv,
+  strip.namespace=TRUE,
+  skip=28,
+  check.names=FALSE,  
   digits = numeric(0),
   ci = FALSE,
   open = '(',
   close = ')',
   sep = ', ',
   format = ci,
+  fields = c('symbol','label','unit'),
+  relative = FALSE,
+  percent=relative,
+  quote = FALSE,
+  na = '.',
+  na.strings = na,
+  as.is = TRUE,
+  nonzero = TRUE,
   ...
 ){
   if(verbose)message('searching ',rundir)
-  y <- x %>% as.xml_document(strip.namespace=strip.namespace,verbose=verbose,project=project,...)
-  z <- try(x %>% as.bootstrap(skip=skip,check.names=check.names,lo=lo,hi=hi,verbose=verbose,project=project,...))
+  # SCAVENGE XML
+  y <- x %>% as.xml_document(strip.namespace=strip.namespace,verbose=verbose,project=project,file=xmlfile,...)
+  # SCAVENGE BOOTSTRAPS
+  args <- list(
+    x = x, skip=skip,check.names=check.names,lo=lo,hi=hi,
+    verbose=verbose,project=project
+  )
+  if(!missing(bootcsv)) args <- c(args,list(bootcsv=bootcsv))
+  args <- c(args,list(...))
+  z <- try(do.call(as.bootstrap,args))
+  #z <- try(x %>% as.bootstrap(skip=skip,check.names=check.names,lo=lo,hi=hi,verbose=verbose,project=project,bootcsv=bootcsv,...))
   theta   <- y %>% val_name('theta',  'theta','estimate')
   thetase <- y %>% val_name('thetase','theta','se')
   sigma   <- y %>% row_col('sigma',   'sigma','estimate')
@@ -160,6 +197,15 @@ as.partab.modelname <- function(
     param$hi <- NA_real_
   }
   param %<>% select(-offdiag)
+  if(nonzero){
+    param %<>% filter(!(estimate == 0 & par %contains% 'omega|sigma'))
+  }
+  if(relative){
+    param %<>% mutate(se = se / estimate) # rename rse below
+    if(percent){
+    param %<>% mutate(se = se * 100) # rename prse below
+    }
+  }
   if(length(digits)){
     param %<>% mutate(estimate = estimate %>% signif(digits))
     param %<>% mutate(se = se %>% signif(digits))
@@ -176,14 +222,21 @@ as.partab.modelname <- function(
     param %<>% mutate(ci = paste(sep=sep, lo, hi) %>% enclose(open,close))
     param %<>% select(-lo, -hi)
   }
+  if(relative && percent) param %<>% rename(prse = se)
+  if(relative && !percent) param %<>% rename(rse = se)
+  # CREATE META
   if(!file.exists(metafile)){
-    d <- data.frame(par=param$par,symbol=NA_character_,label=NA_character_)
-    write.csv(d,file=metafile,row.names=F,quote=F,na='.')
+    # SCAVENGE CTL
+    x %>%
+      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
+      as.paramComments(fields=fields,expected=param$par, na=na) %>%
+      write.csv(row.names=F,quote=quote, file=metafile, na=na, ...)
     message('edit contents of ',metafile)
   }
   if(verbose)message('merging ',metafile)
-  meta <- read.csv(na.strings=c('.','','NA'), as.is=T,metafile)
+  # SCAVENGE META
+  meta <- read.csv(na.strings=na.strings, as.is=as.is,metafile)
   param %<>% left_join(meta,by='par')
+  class(param) <- union('partab', class(param))
   param
 }
-

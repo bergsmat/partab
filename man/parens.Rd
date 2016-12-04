@@ -8,6 +8,8 @@ parens(x, ...)
 }
 \arguments{
 \item{x}{vector}
+
+\item{...}{dots}
 }
 \value{
 character

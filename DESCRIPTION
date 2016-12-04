@@ -12,4 +12,6 @@ Imports:
     xml2,
     dplyr,
     magrittr
+Suggests:
+    ReporteRs
 RoxygenNote: 5.0.1

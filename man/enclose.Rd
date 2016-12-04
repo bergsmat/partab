@@ -8,6 +8,12 @@ enclose(x, open, close, ...)
 }
 \arguments{
 \item{x}{vector}
+
+\item{open}{open string}
+
+\item{close}{close string}
+
+\item{...}{dots}
 }
 \value{
 character

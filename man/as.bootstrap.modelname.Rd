@@ -12,15 +12,17 @@
 \arguments{
 \item{x}{object of dispatch}
 
+\item{project}{path to model directories}
+
+\item{opt}{alternative specification of project}
+
+\item{rundir}{model specific run directory}
+
+\item{pattern}{pattern to search for bootstrap file}
+
+\item{bootcsv}{candidate bootstrap file paths}
+
 \item{...}{arguments to methods}
-
-\item{skip}{number of lines to skip in bootstrap_results.csv}
-
-\item{check.names}{passed to bootstrap reader}
-
-\item{lo}{the PsN bootstrap lower confidence limit (\%)}
-
-\item{hi}{the PsN bootstrap upper confidence limit (\%)}
 }
 \value{
 data.frame
@@ -32,6 +34,6 @@ Creates a bootstrap table from a modelname in Project Context.
 Assumes project has been identified, model directory exists, and PsN bootstrap method has been run for the model.  Scavenges for the last file matching pattern.
 }
 \seealso{
-\code{\link{as.bootstrap.filename}}
+\code{\link{as.bootstrap.filepath}}
 }
 

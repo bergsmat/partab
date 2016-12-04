@@ -9,7 +9,8 @@
   (is.null(opt)) getwd() else opt, opt = getOption("project"),
   rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
   ".meta")), digits = numeric(0), ci = FALSE, open = "(", close = ")",
-  sep = ", ", format = ci, ...)
+  sep = ", ", format = ci, fields = c("symbol", "label", "unit"),
+  relative = FALSE, percent = relative, quote = FALSE, na = ".", ...)
 }
 \arguments{
 \item{x}{a model name (numeric or character)}
@@ -45,6 +46,16 @@
 \item{sep}{separator for bootstrap interval}
 
 \item{format}{format numerics as character}
+
+\item{fields}{metadata fields to read from control stream if no metafile}
+
+\item{relative}{transform standard errors to relative standard errors: rse replaces se}
+
+\item{percent}{if relative is true, express as percent (else ignore): prse replaces se}
+
+\item{quote}{quote csv values when creating template metafile}
+
+\item{na}{how to encode NA in metafiles}
 
 \item{...}{passed to other functions}
 }

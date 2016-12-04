@@ -23,6 +23,6 @@ Checks whether text contains pattern.
 contains('a',letters)
 }
 \seealso{
-\code{\link{`\%contains\%`}}
+\code{\link{\%contains\%}}
 }
 

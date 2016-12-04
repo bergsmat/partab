@@ -12,6 +12,8 @@
 
 \item{prefix}{character to prepend to values in mixed numeric/character columns}
 
+\item{na.strings}{strings to treat as NA}
+
 \item{...}{passed to other methods}
 }
 \value{

@@ -3,8 +3,8 @@
 #' Creates an xml_document in a project context.
 #' @param x object of dispatch
 #' @param ... arguments to methods
-#' @export
 #' @return xml_document
+#' @export
 #' @examples
 #' \dontrun{
 #' options('project') <- 'model'
@@ -44,7 +44,6 @@ as.xml_document.filepath <- function(x,strip.namespace=TRUE,...){
 #'
 #' Creates an xml_document from modelname
 #' @param x filename
-#' @param strip.namespace whether to strip e.g. nm: from xml elements
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory

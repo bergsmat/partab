@@ -5,7 +5,7 @@
 #' @param pattern regular expression
 #' @param text character vector to check
 #' @param ... arguments to methods
-#' @seealso \code{\link{`\%contains\%`}}
+#' @seealso \code{\link{\%contains\%}}
 #' @return logical
 #' @examples
 #' contains('a',letters)
@@ -70,6 +70,7 @@ pool <- function(x,y)list(x=setdiff(x,y),y=setdiff(y,x),both=intersect(x,y))
 #' 
 #' Enclose in parentheses
 #' @param x vector
+#' @param ... dots
 #' @return character
 #' @export
 parens <- function(x,...)paste0('(',x,')')
@@ -77,6 +78,9 @@ parens <- function(x,...)paste0('(',x,')')
 #' 
 #' Enclose in arbitrary characters
 #' @param x vector
+#' @param open open string
+#' @param close close string
+#' @param ... dots
 #' @return character
 #' @export
 enclose <- function(x,open,close,...)paste0(open,x,close)
@@ -131,6 +135,7 @@ as.best.data.frame <- function(x,prefix='#',...){
 #' Converts vector to numeric if doing so creates no new NA; otherwise to character. Number-like vectors that are nevertheless character are prefixed by default to make this explicit when viewing only a few rows.
 #' @param x vector
 #' @param prefix character to prepend to values in mixed numeric/character columns
+#' @param na.strings strings to treat as NA
 #' @param ... passed to other methods
 #' @return vector
 #' @export

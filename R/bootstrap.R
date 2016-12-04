@@ -35,7 +35,7 @@ as.bootstrap.character <- function(x,...){
 #' @export
 #' @return data.frame
 
-as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='2.5',hi='97.5',verbose=TRUE,...){
+as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',verbose=TRUE,...){
   if(verbose) message('reading ',x)
   x <- x %>% 
     read.csv(skip=skip,check.names=check.names,as.is=TRUE,...)
@@ -57,12 +57,14 @@ as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='2.5',hi='97.5'
 #' Assumes project has been identified, model directory exists, and PsN bootstrap method has been run for the model.  Scavenges for the last file matching pattern.  
 #' 
 #' @param x object of dispatch
-#' @param skip number of lines to skip in bootstrap_results.csv
-#' @param check.names passed to bootstrap reader
-#' @param lo the PsN bootstrap lower confidence limit (\%)
-#' @param hi the PsN bootstrap upper confidence limit (\%)
+#' @param project path to model directories
+#' @param opt alternative specification of project
+#' @param rundir model specific run directory
+#' @param pattern pattern to search for bootstrap file
+#' @param default candidate bootstrap file paths
+#' @param bootcsv path to bootstrap_results.csv or equivalent
 #' @param ... arguments to methods
-#' @seealso \code{\link{as.bootstrap.filename}}
+#' @seealso \code{\link{as.bootstrap.filepath}}
 
 #' @export
 #' @return data.frame
@@ -74,7 +76,12 @@ as.bootstrap.modelname <- function(
   opt = getOption('project'),
   rundir = file.path(project,x),
   pattern='bootstrap_results.csv',
-  bootcsv = dir(rundir,pattern = pattern,recursive=TRUE,full.names=TRUE),
+  bootcsv = dir(
+    rundir,
+    pattern = pattern,
+    recursive=TRUE,
+    full.names=TRUE
+  ),
   ...
 ){
   if(!length(bootcsv))stop(
@@ -82,7 +89,7 @@ as.bootstrap.modelname <- function(
     pattern,
     '. Perhaps set arg project= or options(project=)'
   )
-  file <- rev(bootcsv)[[1]]
+  file <- rev(bootcsv)[[1]] # use last
   class(file) <- 'filepath'
   as.bootstrap(file,...)
 }

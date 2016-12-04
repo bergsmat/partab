@@ -20,8 +20,6 @@
 \item{file}{actual xml storage location; overrides others if specified directly}
 
 \item{...}{passed arguments}
-
-\item{strip.namespace}{whether to strip e.g. nm: from xml elements}
 }
 \value{
 xml_document
