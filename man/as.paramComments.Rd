@@ -29,18 +29,6 @@ as.paramComments(x, ...)
 \item{type}{parameter type: theta, omega,or sigma}
 
 \item{prior}{number of prior parameters of this type (imporant for numbering)}
-
-\item{x}{nmctlType}
-
-\item{...}{dots}
-
-\item{x}{nmctl}
-
-\item{...}{dots}
-
-\item{x}{initlist}
-
-\item{...}{dots}
 }
 \value{
 data.frame

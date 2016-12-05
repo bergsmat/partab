@@ -15,10 +15,6 @@ as.file(x, ...)
 \item{...}{passed to methods}
 
 \item{file}{storage path for docx file}
-
-\item{x}{docx}
-
-\item{...}{passed to writeDoc}
 }
 \description{
 Coerces to file.

@@ -31,26 +31,6 @@ as.docx(x, ...)
 \item{empty_template}{passed to docx}
 
 \item{list.definition}{passed to docx}
-
-\item{x}{docx}
-
-\item{...}{dots}
-
-\item{x}{docx}
-
-\item{...}{passed to addFlexTable}
-
-\item{x}{partab}
-
-\item{title}{passed to docx}
-
-\item{template}{passed to docx}
-
-\item{empty_template}{passed to docx}
-
-\item{list.definition}{passed to docx}
-
-\item{...}{passed to addFlexTable}
 }
 \value{
 docx
@@ -85,18 +65,9 @@ Returns the object.
 library(magrittr)
 options(project = system.file('project/model',package='partab'))
 1001 \%>\% as.partab \%>\% as.docx \%>\% as.file('1001.docx')
-library(magrittr)
-options(project = system.file('project/model',package='partab'))
-1001 \%>\% as.partab \%>\% as.docx \%>\% as.file('1001.docx')
 }
 \seealso{
 \code{link{as.docx.data.frame}}
-
-\code{\link[ReporteRs]{docx}}
-
-\code{\link[ReporteRs]{addFlexTable}}
-
-\code{\link[ReporteRs]{FlexTable}}
 
 \code{\link[ReporteRs]{docx}}
 

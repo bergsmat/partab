@@ -19,18 +19,6 @@ as.partab(x, ...)
 \item{x}{object of dispatch}
 
 \item{...}{arguments to methods}
-
-\item{x}{partab}
-
-\item{...}{arguments to methods}
-
-\item{x}{numeric}
-
-\item{...}{arguments to methods}
-
-\item{x}{numeric}
-
-\item{...}{arguments to methods}
 }
 \description{
 Creates a model parameter table in project context.

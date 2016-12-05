@@ -12,8 +12,35 @@
 #' options(project = system.file('project/model',package='partab'))
 #' 1001 %>% as.bootstrap
 as.bootstrap <- function(x,...)UseMethod('as.bootstrap')
+
+#' Create Bootstrap from Bootstrap
+#' 
+#' Creates bootstrap from bootstrap.
+#' 
+#' @inheritParams as.bootstrap
+#' @return data.frame
+#' @describeIn as.bootstrap bootstrap method
+#' @export
 as.bootstrap.bootstrap <- function(x,...)x
+
+#' Create Bootstrap from Numeric
+#' 
+#' Creates bootstrap from numeric.
+#' 
+#' @inheritParams as.bootstrap
+#' @return data.frame
+#' @describeIn as.bootstrap numeric method
+#' @export
 as.bootstrap.numeric  <- function(x,...)as.bootstrap(as.character(x),...)
+
+#' Create Bootstrap from Character
+#' 
+#' Creates bootstrap from character.
+#' 
+#' @inheritParams as.bootstrap
+#' @return data.frame
+#' @describeIn as.bootstrap character method
+#' @export
 as.bootstrap.character <- function(x,...){
   class(x) <- if(file.exists(x)) 'filepath' else 'modelname'
   as.bootstrap(x,...)
@@ -24,13 +51,12 @@ as.bootstrap.character <- function(x,...){
 #' Creates a bootstrap table from a PsN bootstrap results csv filepath.
 #' 
 #' @import magrittr
-#' @param x object of dispatch
+#' @inheritParams as.bootstrap
 #' @param skip number of lines to skip in bootstrap_results.csv
 #' @param check.names passed to bootstrap reader
 #' @param lo the PsN bootstrap lower confidence limit (\%)
 #' @param hi the PsN bootstrap upper confidence limit (\%)
 #' @param verbose display messages
-#' @param ... arguments to methods
 #' @return data.frame
 #' @describeIn as.bootstrap filepath method
 #' @export
@@ -56,13 +82,12 @@ as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',ver
 #' 
 #' Assumes project has been identified, model directory exists, and PsN bootstrap method has been run for the model.  Scavenges for the last file matching pattern.  
 #' 
-#' @param x object of dispatch
+#' @inheritParams as.bootstrap
 #' @param project path to model directories
 #' @param opt alternative specification of project
 #' @param rundir model specific run directory
 #' @param pattern pattern to search for bootstrap file
 #' @param bootcsv path to bootstrap_results.csv or equivalent
-#' @param ... arguments to methods
 #' @return data.frame
 #' @describeIn as.bootstrap modelname method
 #' @export

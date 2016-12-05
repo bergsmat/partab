@@ -17,8 +17,7 @@ as.partab <- function(x,...)UseMethod('as.partab')
 #' Creates a model parameter table from a partab object.
 #' 
 #' Just returns the object unmodified.
-#' @param x partab
-#' @param ... arguments to methods
+#' @inheritParams as.partab
 #' @describeIn as.partab partab method
 #' @export
 as.partab.partab <- function(x,...)x
@@ -27,8 +26,7 @@ as.partab.partab <- function(x,...)x
 #' Creates a model parameter table from a number.
 #' 
 #' Just coerces to character and calls as.partab again.
-#' @param x numeric
-#' @param ... arguments to methods
+#' @inheritParams as.partab
 #' @describeIn as.partab numeric method
 #' @export
 as.partab.numeric  <- function(x,...)as.partab(as.character(x),...)
@@ -37,8 +35,7 @@ as.partab.numeric  <- function(x,...)as.partab(as.character(x),...)
 #' Creates a model parameter table from a character string.
 #' 
 #' Reclassifies x as a modelname and calls as.partab again.
-#' @param x numeric
-#' @param ... arguments to methods
+#' @inheritParams as.partab
 #' @describeIn as.partab character method
 #' @export
 as.partab.character <- function(x,...){

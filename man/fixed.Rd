@@ -16,14 +16,6 @@ fixed(x, ...)
 \item{x}{object}
 
 \item{...}{dots}
-
-\item{x}{object}
-
-\item{...}{dots}
-
-\item{x}{initList}
-
-\item{...}{dots}
 }
 \value{
 logical

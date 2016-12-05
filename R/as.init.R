@@ -17,7 +17,7 @@ as.init <- function(x,...)UseMethod('as.init')
 #' Coerce init to init
 #' 
 #' Coerces init to init
-#' @param x init
+#' @inheritParams as.init
 #' @param fixed logical
 #' @param comment character
 #' @param ... dots
@@ -27,7 +27,7 @@ as.init <- function(x,...)UseMethod('as.init')
 as.init.init <- function(x=numeric(0),fixed=FALSE,comment=character(0),...)as.init.numeric(x=x,fixed=fixed,comment=comment,...)
 
 #' Coerces numeric to init
-#' @param x numeric
+#' @inheritParams as.init
 #' @param fixed logical
 #' @param comment character
 #' @param ... dots
@@ -58,8 +58,7 @@ as.init.numeric <- function(x=numeric(0),fixed=FALSE,comment=character(0),...){
 #' Coerce init to character
 #' 
 #' Coerces init to character.
-#' @param x init
-#' @param ... dots
+#' @inheritParams as.init
 #' @return character
 #' @export
 #' @keywords internal
@@ -126,8 +125,7 @@ fixed <- function(x,...)UseMethod('fixed')
 #' Check if init is fixed
 #' 
 #' Checks if init is fixed.
-#' @param x object
-#' @param ... dots
+#' @inheritParams fixed
 #' @return logical
 #' @describeIn fixed init method
 #' @export
@@ -166,9 +164,8 @@ as.initList <- function(x,...)UseMethod('as.initList')
 #' Coerce list to initList
 #' 
 #' Coerces list to initlist.
-#' @param x list
+#' @inheritParams as.initList
 #' @param comment character
-#' @param ... dots
 #' @return initList
 #' @describeIn as.initList list method
 #' @export
@@ -244,10 +241,9 @@ print.initList <-function(x,...)print(format(x,...))
 #' Coerce numeric to initList
 #' 
 #' Coerces numeric to initList
-#' @param x numeric
+#' @inheritParams as.initList
 #' @param fixed logical
 #' @param comment character
-#' @param ... dots
 #' @return initList
 #' @describeIn as.initList numeric method
 #' @export
@@ -290,8 +286,7 @@ as.initList.numeric <- function(x,fixed=FALSE,comment=character(0),...){
 #' Check if initList is fixed
 #' 
 #' Checks if initList is fixed.
-#' @param x initList
-#' @param ... dots
+#' @inheritParams fixed
 #' @return logical
 #' @describeIn fixed initList method
 #' @export
@@ -356,8 +351,7 @@ fixed.initList <- function(x,...)sapply(x,fixed)
 #' Coerce character to initList
 #' 
 #' Coerces character to initList.
-#' @param x character
-#' @param ... dots
+#' @inheritParams as.initList
 #' @return initList
 #' @describeIn as.initList character method
 #' @export
@@ -442,8 +436,7 @@ as.initList.character <- function(x,...){
 #' Coerce initList to initList
 #' 
 #' Coerces initList to initList
-#' @param x initList
-#' @param ... dots
+#' @inheritParams as.initList
 #' @return initList
 #' @describeIn as.initList initList method
 #' @export
@@ -455,18 +448,18 @@ as.initList.initList <- function(x,...)x
 #' @param x object
 #' @param ... dots
 #' @export
+#' @family tweak
 tweak <- function(x,...)UseMethod('tweak')
 
 #' Tweak init
 #' 
 #' Tweaks init.
-#' @param x init
+#' @inheritParams tweak
 #' @param sd numeric
 #' @param digits integer
-#' @param ... dots
 #' @return init
-#' @describeIn tweak init method
 #' @export
+#' @family tweak
 tweak.init <- function(x,sd=0.13,digits=3,...){
 	scale <- rnorm(1,mean=1,sd=sd)
 	y <- x$init * scale
@@ -478,13 +471,12 @@ tweak.init <- function(x,sd=0.13,digits=3,...){
 #' Tweak initList
 #' 
 #' Tweaks initList.
-#' @param x initList
+#' @inheritParams tweak
 #' @param sd numeric
 #' @param digits integer
-#' @param ... dots
 #' @return initList
-#' @describeIn tweak initList method
 #' @export
+#' @family tweak
 tweak.initList <- function(x,sd=0.13,digits=3,...){
 	x[] <- lapply(x,tweak,sd=sd,digits=digits,...)
 	x
@@ -492,13 +484,12 @@ tweak.initList <- function(x,sd=0.13,digits=3,...){
 #' Tweak nmctl
 #' 
 #' Tweaks nmctl.
-#' @param x nmctl
+#' @inheritParams tweak
 #' @param sd numeric
 #' @param digits integer
-#' @param ... dots
 #' @return nmctl
-#' @describeIn tweak nmctl method
 #' @export
+#' @family tweak
 tweak.nmctl <- function(x,sd=0.13,digits=3,...){
 	stopifnot('theta' %in% names(x))
 	x$theta <- as.initList(x$theta)

@@ -10,10 +10,33 @@
 #' options(project = system.file('project/model',package='partab'))
 #' 1001 %>% as.xml_document
 #' @export
-
 as.xml_document <- function(x,...)UseMethod('as.xml_document')
+
+#' Coerce xml_document to xml_document
+#' 
+#' Coerces xml_document to xml_document
+#' @inheritParams as.xml_document
+#' @return xml_document
+#' @describeIn as.xml_document xml_document method
+#' @export
 as.xml_document.xml_document <- function(x,...)x
+
+#' Coerce numeric to xml_document
+#' 
+#' Coerces numeric to xml_document
+#' @inheritParams as.xml_document
+#' @return xml_document
+#' @describeIn as.xml_document numeric method
+#' @export
 as.xml_document.numeric  <- function(x,...)as.xml_document(as.character(x),...)
+
+#' Coerce character to xml_document
+#' 
+#' Coerces character to xml_document
+#' @inheritParams as.xml_document
+#' @return xml_document
+#' @describeIn as.xml_document character method
+#' @export
 as.xml_document.character <- function(x,...){
   class(x) <- if(file.exists(x)) 'filepath' else 'modelname'
   as.xml_document(x,...)
@@ -23,9 +46,8 @@ as.xml_document.character <- function(x,...){
 #'
 #' Creates an xml_document from filepath
 #' @import xml2
-#' @param x filepath
+#' @inheritParams as.xml_document
 #' @param strip.namespace whether to strip e.g. nm: from xml elements
-#' @param ... passed arguments
 #' @return xml_document
 #' @describeIn as.xml_document filepath method
 #' @export
@@ -42,12 +64,11 @@ as.xml_document.filepath <- function(x,strip.namespace=TRUE,...){
 #' Create xml_document From modelname
 #'
 #' Creates an xml_document from modelname
-#' @param x filename
+#' @inheritParams as.xml_document
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory
 #' @param file actual xml storage location; overrides others if specified directly
-#' @param ... passed arguments
 #' @return xml_document
 #' @describeIn as.xml_document modelname method
 #' @export
@@ -86,8 +107,7 @@ xpath <- function(x,...)UseMethod('xpath')
 #' Evaluate xpath Expression in Default Context
 #'
 #' Coerces x to xml_document and evaluates.
-#' @param x xml_document
-#' @param ... passed arguments
+#' @inheritParams xpath
 #' @return vector
 #' @describeIn xpath default method
 #' @export
@@ -100,9 +120,8 @@ xpath.default <- function(x,...)xpath(as.xml_document(x),...)
 #' The resulting nodeset is scavenged for text, and coerced to best of numeric or character.
 #' @import magrittr
 #' @import xml2
-#' @param x xml_document
+#' @inheritParams xpath
 #' @param xpath xpath expression to evaluate
-#' @param ... passed arguments
 #' @return vector
 #' @describeIn xpath xml_document method
 #' @export

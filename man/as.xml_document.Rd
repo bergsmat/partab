@@ -2,11 +2,20 @@
 % Please edit documentation in R/xpath.R
 \name{as.xml_document}
 \alias{as.xml_document}
+\alias{as.xml_document.character}
 \alias{as.xml_document.filepath}
 \alias{as.xml_document.modelname}
+\alias{as.xml_document.numeric}
+\alias{as.xml_document.xml_document}
 \title{Create an xml_document in a Project Context}
 \usage{
 as.xml_document(x, ...)
+
+\method{as.xml_document}{xml_document}(x, ...)
+
+\method{as.xml_document}{numeric}(x, ...)
+
+\method{as.xml_document}{character}(x, ...)
 
 \method{as.xml_document}{filepath}(x, strip.namespace = TRUE, ...)
 
@@ -28,16 +37,14 @@ as.xml_document(x, ...)
 \item{rundir}{specific model directory}
 
 \item{file}{actual xml storage location; overrides others if specified directly}
-
-\item{x}{filepath}
-
-\item{...}{passed arguments}
-
-\item{x}{filename}
-
-\item{...}{passed arguments}
 }
 \value{
+xml_document
+
+xml_document
+
+xml_document
+
 xml_document
 
 xml_document
@@ -47,12 +54,24 @@ xml_document
 \description{
 Creates an xml_document in a project context.
 
+Coerces xml_document to xml_document
+
+Coerces numeric to xml_document
+
+Coerces character to xml_document
+
 Creates an xml_document from filepath
 
 Creates an xml_document from modelname
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{xml_document}: xml_document method
+
+\item \code{numeric}: numeric method
+
+\item \code{character}: character method
+
 \item \code{filepath}: filepath method
 
 \item \code{modelname}: modelname method

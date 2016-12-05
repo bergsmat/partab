@@ -21,21 +21,9 @@ as.best(x, ...)
 \item{prefix}{character to prepend to values in mixed numeric/character columns}
 
 \item{na.strings}{strings to treat as NA}
-
-\item{x}{data.frame}
-
-\item{...}{passed to other methods}
-
-\item{x}{vector}
-
-\item{prefix}{character to prepend to values in mixed numeric/character columns}
-
-\item{...}{passed to other methods}
 }
 \value{
 data.frame
-
-vector
 }
 \description{
 Convert to best of numeric or character.

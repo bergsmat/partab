@@ -3,32 +3,11 @@
 #' Coerces to docx
 #' @param x object of dispatch
 #' @param ... arguments to methods
-#' @seealso \code{link{as.docx.data.frame}}
-#' @return docx
-#' @export
-
-as.docx <- function(x,...)UseMethod('as.docx')
-#' Coerce docx to docx
-#' 
-#' Coerces docx to docx.
-#' 
-#' Returns the object.
-#' @param x docx
-#' @param ... dots
-#' @return docx
-#' @describeIn as.docx docx method
-#' @export
-as.docx.docx <- function(x,...)x
-
-#' Coerce data.frame to docx
-#' 
-#' Coerces data.frame to docx
-#' @param x docx
 #' @param title passed to docx
 #' @param template passed to docx
 #' @param empty_template passed to docx
 #' @param list.definition passed to docx
-#' @param ... passed to addFlexTable
+#' @seealso \code{link{as.docx.data.frame}}
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{addFlexTable}}
 #' @seealso \code{\link[ReporteRs]{FlexTable}}
@@ -37,6 +16,24 @@ as.docx.docx <- function(x,...)x
 #' library(magrittr)
 #' options(project = system.file('project/model',package='partab'))
 #' 1001 %>% as.partab %>% as.docx %>% as.file('1001.docx')
+#' @export
+as.docx <- function(x,...)UseMethod('as.docx')
+#' Coerce docx to docx
+#' 
+#' Coerces docx to docx.
+#' 
+#' Returns the object.
+#' @inheritParams as.docx
+#' @return docx
+#' @describeIn as.docx docx method
+#' @export
+as.docx.docx <- function(x,...)x
+
+#' Coerce data.frame to docx
+#' 
+#' Coerces data.frame to docx
+#' @inheritParams as.docx
+#' @return docx
 #' @describeIn as.docx data.frame method
 #' @export
 as.docx.data.frame <- function(
@@ -60,20 +57,8 @@ as.docx.data.frame <- function(
 #' Coerce partab to docx
 #' 
 #' Coerces partab to docx.
-#' @param x partab
-#' @param title passed to docx
-#' @param template passed to docx
-#' @param empty_template passed to docx
-#' @param list.definition passed to docx
-#' @param ... passed to addFlexTable
-#' @seealso \code{\link[ReporteRs]{docx}}
-#' @seealso \code{\link[ReporteRs]{addFlexTable}}
-#' @seealso \code{\link[ReporteRs]{FlexTable}}
+#' @inheritParams as.docx
 #' @return docx
-#' @examples
-#' library(magrittr)
-#' options(project = system.file('project/model',package='partab'))
-#' 1001 %>% as.partab %>% as.docx %>% as.file('1001.docx')
 #' @describeIn as.docx partab method
 #' @export
 as.docx.partab <- function(
@@ -127,8 +112,7 @@ as.flextable <- function(x,...)UseMethod('as.flextable')
 #' Coerce data.frame to flextable
 #' 
 #' Coerces data.frame to flextable
-#' @param x data.frame
-#' @param ... passed to flextable if valid argument
+#' @inheritParams as.flextable
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{addFlexTable}}
 #' @seealso \code{\link[ReporteRs]{FlexTable}}
@@ -156,8 +140,7 @@ as.flextable.data.frame <- function(x,...){
 #' Coerces partab to flextable.
 #' 
 #' At present, just calls the data.frame method.
-#' @param x data.frame
-#' @param ... passed to flextable if valid argument
+#' @inheritParams as.flextable
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{addFlexTable}}
 #' @seealso \code{\link[ReporteRs]{FlexTable}}
@@ -177,9 +160,8 @@ as.file <- function(x,...)UseMethod('as.file')
 #' Coerce docx to File
 #' 
 #' Coerces docx to file.
-#' @param x docx
+#' @inheritParams as.file
 #' @param file storage path for docx file
-#' @param ... passed to writeDoc
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{writeDoc}}
 #' @describeIn as.file docx method

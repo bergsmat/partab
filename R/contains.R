@@ -38,7 +38,6 @@ contains <- function(pattern,text,...){
 #' @return numeric
 #' @examples
 #' text2decimal('30 mg')
-#' @describeIn contains text2decimal
 #' @export
 
 `text2decimal` <-
@@ -52,7 +51,6 @@ function (x) as.numeric(sub("^[^0-9.+-]*([0-9.eE+-]+).*$", "\\1", as.character(x
 #' @return logical
 #' @examples
 #' is.defined(c(1,NA,2))
-#' @describeIn contains is.defined
 #' @export
 
 is.defined <- function(x)!is.na(x)
@@ -65,7 +63,7 @@ is.defined <- function(x)!is.na(x)
 #' @return list: unique x, unique y, and intersection
 #' @examples
 #' pool(1:3,2:4)
-#' @describeIn contains pool
+
 #' @export
 pool <- function(x,y)list(x=setdiff(x,y),y=setdiff(y,x),both=intersect(x,y))
 
@@ -75,7 +73,7 @@ pool <- function(x,y)list(x=setdiff(x,y),y=setdiff(y,x),both=intersect(x,y))
 #' @param x vector
 #' @param ... dots
 #' @return character
-#' @describeIn contains parens
+
 #' @export
 parens <- function(x,...)paste0('(',x,')')
 #' Enclose in Arbitrary Characters
@@ -86,7 +84,7 @@ parens <- function(x,...)paste0('(',x,')')
 #' @param close close string
 #' @param ... dots
 #' @return character
-#' @describeIn contains enclose
+
 #' @export
 enclose <- function(x,open,close,...)paste0(open,x,close)
 
@@ -97,7 +95,7 @@ enclose <- function(x,open,close,...)paste0(open,x,close)
 #' @param width desired number of characters
 #' @param ... ignored
 #' @return character
-#' @describeIn contains padded
+
 #' @export
 #' 
 padded<-function (x, width = 4, ...) 
@@ -110,19 +108,17 @@ padded<-function (x, width = 4, ...)
 #' Converts to numeric if doing so creates no new NA; otherwise to character.
 #' @param x vector or data.frame
 #' @param ... passed to other methods
+#' @param prefix character to prepend to values in mixed numeric/character columns
+#' @param na.strings strings to treat as NA
 #' @export
-
-as.best <-
-  function(x,...)UseMethod('as.best')
+as.best <- function(x,...)UseMethod('as.best')
 
 #' Convert Dataframe Columns to Best of Numeric or Character
 #'
 #' Convert data.frame columns to best of numeric or character.
 #' 
 #' Converts columns to numeric if doing so creates no new NA; otherwise to character. Number-like columns that are nevertheless character are prefixed by default to make this explicit when viewing only a few rows.
-#' @param x data.frame
-#' @param prefix character to prepend to values in mixed numeric/character columns
-#' @param ... passed to other methods
+#' @inheritParams as.best
 #' @return data.frame
 #' @describeIn as.best data.frame method
 #' @export
@@ -140,11 +136,7 @@ as.best.data.frame <- function(x,prefix='#',...){
 #' Convert vector to best of numeric or character.
 #' 
 #' Converts vector to numeric if doing so creates no new NA; otherwise to character. Number-like vectors that are nevertheless character are prefixed by default to make this explicit when viewing only a few rows.
-#' @param x vector
-#' @param prefix character to prepend to values in mixed numeric/character columns
-#' @param na.strings strings to treat as NA
-#' @param ... passed to other methods
-#' @return vector
+#' @inheritParams as.best
 #' @describeIn as.best default method
 #' @export
 as.best.default <-

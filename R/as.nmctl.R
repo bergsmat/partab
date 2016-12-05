@@ -6,7 +6,6 @@
 #' @return nmctl
 #' @export
 #' @keywords internal
- 
 as.nmctl <-
 function(x,...)UseMethod('as.nmctl')
 
@@ -46,12 +45,11 @@ function(x,...)unclass(x)
 
 #' Coerce character to nmctl
 #' Coerces chacter to nmctl.
-#' @param x character
+#' @inheritParams as.nmctl
 #' @param pattern pattern to identify record declarations
 #' @param head subpattern to identify declaration type
 #' @param tail subpattern remaining
 #' @param parse whether to convert thetas to initList objects
-#' @param ... dots
 #' @return list
 #' @describeIn as.nmctl character method
 #' @export
@@ -187,9 +185,8 @@ function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
 #' 
 #' Converts filename to nmctl.
 #' 
-#' @param x filename
+#' @inheritParams as.nmctl
 #' @param parse convert thetas to initList
-#' @param ... dots
 #' @return nmctl
 #' @describeIn as.nmctl filename method
 #' @export 
@@ -200,7 +197,7 @@ as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
 #' 
 #' Converts modelname to nmctl.
 #' 
-#' @param x modelname
+#' @inheritParams as.nmctl
 #' @param verbose whether to display messages
 #' @param project path to project directory
 #' @param opt alternative specification of project
@@ -208,7 +205,6 @@ as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
 #' @param ctlfile path to model control stream
 #' @param ext extension (with dot) for control stream
 #' @param parse convert thetas to initList
-#' @param ... dots
 #' @return nmctl
 #' @describeIn as.nmctl modelname method
 #' @export 
@@ -242,9 +238,8 @@ as.nmctlType <- function(x,...)UseMethod('as.nmctlType')
 #' 
 #' Extracts nmctl record type from nmctl.
 #' 
-#'@param x nmctl
+#'@inheritParams as.nmctlType
 #'@param type theta omega or sigma
-#'@param ... dots
 #'@return nmctltype (list)
 #'@describeIn as.nmctlType nmctl method
 #'@export
@@ -269,8 +264,7 @@ as.paramComments <- function(x,...)UseMethod('as.paramComments')
 #' 
 #' Converts nmctlType to paramComments
 #' 
-#' @param x nmctlType
-#' @param ... dots
+#' @inheritParams as.paramComments
 #' @return data.frame
 #' @describeIn as.paramComments nmctlType method
 #' @export
@@ -293,11 +287,10 @@ as.paramComments.nmctlType <- function(x,...){
 #' 
 #' Converts nmctl to paramComments
 #' 
-#' @param x nmctl
+#' @inheritParams as.paramComments
 #' @param fields data items to scavenge from control stream comments
 #' @param expected parameters known from NONMEM output
 #' @param na string to use for NA values when writing default metafile
-#' @param ... dots
 #' @return data.frame
 #' @describeIn as.paramComments nmctl method
 #' @export
@@ -331,10 +324,9 @@ as.paramComments.nmctl <- function(x,fields,expected,na, ...){
 #' 
 #' Converts initList to paramComments
 #' 
-#' @param x initlist
+#' @inheritParams as.paramComments
 #' @param type parameter type: theta, omega,or sigma
 #' @param prior number of prior parameters of this type (imporant for numbering)
-#' @param ... dots
 #' @return data.frame
 #' @describeIn as.paramComments initList method
 #' @export

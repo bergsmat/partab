@@ -7,7 +7,7 @@
 \method{as.character}{init}(x, ...)
 }
 \arguments{
-\item{x}{init}
+\item{x}{object}
 
 \item{...}{dots}
 }

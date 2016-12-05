@@ -44,21 +44,9 @@ as.nmctl(x, ...)
 
 \item{ext}{extension (with dot) for control stream}
 
-\item{x}{character}
-
-\item{...}{dots}
-
-\item{x}{filename}
-
 \item{parse}{convert thetas to initList}
 
-\item{...}{dots}
-
-\item{x}{modelname}
-
 \item{parse}{convert thetas to initList}
-
-\item{...}{dots}
 }
 \value{
 nmctl

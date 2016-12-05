@@ -15,10 +15,6 @@ as.nmctlType(x, ...)
 \item{...}{dots}
 
 \item{type}{theta omega or sigma}
-
-\item{x}{nmctl}
-
-\item{...}{dots}
 }
 \value{
 nmctltype (list)

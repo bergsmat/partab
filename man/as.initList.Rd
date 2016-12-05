@@ -27,23 +27,7 @@ as.initList(x, ...)
 
 \item{fixed}{logical}
 
-\item{x}{list}
-
-\item{...}{dots}
-
-\item{x}{numeric}
-
 \item{comment}{character}
-
-\item{...}{dots}
-
-\item{x}{character}
-
-\item{...}{dots}
-
-\item{x}{initList}
-
-\item{...}{dots}
 }
 \value{
 initList

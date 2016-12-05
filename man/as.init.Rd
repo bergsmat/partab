@@ -23,11 +23,7 @@ as.init(x, ...)
 
 \item{comment}{character}
 
-\item{x}{init}
-
 \item{...}{dots}
-
-\item{x}{numeric}
 
 \item{fixed}{logical}
 

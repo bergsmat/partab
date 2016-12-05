@@ -18,14 +18,6 @@ xpath(x, ...)
 \item{...}{passed arguments}
 
 \item{xpath}{xpath expression to evaluate}
-
-\item{x}{xml_document}
-
-\item{...}{passed arguments}
-
-\item{x}{xml_document}
-
-\item{...}{passed arguments}
 }
 \value{
 vector

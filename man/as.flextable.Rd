@@ -16,14 +16,6 @@ as.flextable(x, ...)
 \item{x}{object}
 
 \item{...}{passed to methods}
-
-\item{x}{data.frame}
-
-\item{...}{passed to flextable if valid argument}
-
-\item{x}{data.frame}
-
-\item{...}{passed to flextable if valid argument}
 }
 \value{
 flextable

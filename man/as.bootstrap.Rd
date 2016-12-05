@@ -2,11 +2,20 @@
 % Please edit documentation in R/bootstrap.R
 \name{as.bootstrap}
 \alias{as.bootstrap}
+\alias{as.bootstrap.bootstrap}
+\alias{as.bootstrap.character}
 \alias{as.bootstrap.filepath}
 \alias{as.bootstrap.modelname}
+\alias{as.bootstrap.numeric}
 \title{Create a Bootstrap Table}
 \usage{
 as.bootstrap(x, ...)
+
+\method{as.bootstrap}{bootstrap}(x, ...)
+
+\method{as.bootstrap}{numeric}(x, ...)
+
+\method{as.bootstrap}{character}(x, ...)
 
 \method{as.bootstrap}{filepath}(x, skip = 28, check.names = FALSE,
   lo = "5", hi = "95", verbose = TRUE, ...)
@@ -40,16 +49,14 @@ as.bootstrap(x, ...)
 \item{pattern}{pattern to search for bootstrap file}
 
 \item{bootcsv}{path to bootstrap_results.csv or equivalent}
-
-\item{x}{object of dispatch}
-
-\item{...}{arguments to methods}
-
-\item{x}{object of dispatch}
-
-\item{...}{arguments to methods}
 }
 \value{
+data.frame
+
+data.frame
+
+data.frame
+
 data.frame
 
 data.frame
@@ -58,6 +65,12 @@ data.frame
 }
 \description{
 Creates a bootstrap table.
+
+Creates bootstrap from bootstrap.
+
+Creates bootstrap from numeric.
+
+Creates bootstrap from character.
 
 Creates a bootstrap table from a PsN bootstrap results csv filepath.
 
@@ -68,6 +81,12 @@ Assumes project has been identified, model directory exists, and PsN bootstrap m
 }
 \section{Methods (by class)}{
 \itemize{
+\item \code{bootstrap}: bootstrap method
+
+\item \code{numeric}: numeric method
+
+\item \code{character}: character method
+
 \item \code{filepath}: filepath method
 
 \item \code{modelname}: modelname method
