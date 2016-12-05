@@ -1,4 +1,4 @@
-#' Create Model Parameter Table in Project Context.
+#' Create Model Parameter Table in Project Context
 #'
 #' Creates a model parameter table in project context.
 #' 
@@ -19,6 +19,7 @@ as.partab <- function(x,...)UseMethod('as.partab')
 #' Just returns the object unmodified.
 #' @param x partab
 #' @param ... arguments to methods
+#' @describeIn as.partab partab method
 #' @export
 as.partab.partab <- function(x,...)x
 #' Create Model Parameter Table from Number.
@@ -28,6 +29,7 @@ as.partab.partab <- function(x,...)x
 #' Just coerces to character and calls as.partab again.
 #' @param x numeric
 #' @param ... arguments to methods
+#' @describeIn as.partab numeric method
 #' @export
 as.partab.numeric  <- function(x,...)as.partab(as.character(x),...)
 #' Create Model Parameter Table from Character
@@ -37,6 +39,7 @@ as.partab.numeric  <- function(x,...)as.partab(as.character(x),...)
 #' Reclassifies x as a modelname and calls as.partab again.
 #' @param x numeric
 #' @param ... arguments to methods
+#' @describeIn as.partab character method
 #' @export
 as.partab.character <- function(x,...){
   class(x) <-  'modelname'
@@ -65,7 +68,7 @@ row_col <- function(x, xpath, param, moment,...){
   dat
 }
 
-#' Create a Parameter Table from Model name.
+#' Create a Parameter Table from Model Name
 #'
 #' Creates a parameter table from a model name. Pass the project argument or set 
 #' the project option.  
@@ -102,11 +105,14 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param as.is passed to read.csv for reading metafile
 #' @param nonzero limit random effects to those with nonzero estimates
 #' @param ... passed to other functions
+#' @seealso \code{\link{as.docx.partab}}
+#' @seealso \code{\link{as.flextable.partab}}
 #' @seealso \code{\link{as.xml_document.modelname}}
 #' @seealso \code{\link{as.bootstrap.modelname}}
 #' @seealso \code{\link{as.nmctl.modelname}}
 #' @seealso \code{\link{write.csv}}
 #' @seealso \code{\link{read.csv}}
+#' @aliases partab
 
 #' @return object of class partab, data.frame
 #' @export

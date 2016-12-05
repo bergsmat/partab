@@ -2,6 +2,7 @@
 % Please edit documentation in R/partab.R
 \name{as.partab.modelname}
 \alias{as.partab.modelname}
+\alias{partab}
 \title{Create a Parameter Table from Model name.}
 \usage{
 \method{as.partab}{modelname}(x, verbose = TRUE, lo = "5", hi = "95",
@@ -85,6 +86,10 @@ the project option.
 Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
 }
 \seealso{
+\code{\link{as.docx.partab}}
+
+\code{\link{as.flextable.partab}}
+
 \code{\link{as.xml_document.modelname}}
 
 \code{\link{as.bootstrap.modelname}}

@@ -3,13 +3,13 @@
 #' Creates an xml_document in a project context.
 #' @param x object of dispatch
 #' @param ... arguments to methods
+#' @seealso \code{\link{xpath}}
 #' @return xml_document
-#' @export
 #' @examples
-#' \dontrun{
-#' options('project') <- 'model'
-#' 1044 %>% as.xml_document
-#' }
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
+#' 1001 %>% as.xml_document
+#' @export
 
 as.xml_document <- function(x,...)UseMethod('as.xml_document')
 as.xml_document.xml_document <- function(x,...)x
@@ -26,10 +26,9 @@ as.xml_document.character <- function(x,...){
 #' @param x filepath
 #' @param strip.namespace whether to strip e.g. nm: from xml elements
 #' @param ... passed arguments
-#' @export
 #' @return xml_document
-
-
+#' @describeIn as.xml_document filepath method
+#' @export
 as.xml_document.filepath <- function(x,strip.namespace=TRUE,...){
   if(!strip.namespace)return(read_xml(x))
   x <- readLines(x)
@@ -49,8 +48,9 @@ as.xml_document.filepath <- function(x,strip.namespace=TRUE,...){
 #' @param rundir specific model directory
 #' @param file actual xml storage location; overrides others if specified directly
 #' @param ... passed arguments
-#' @export
 #' @return xml_document
+#' @describeIn as.xml_document modelname method
+#' @export
 
 as.xml_document.modelname <- function(
   x,
@@ -71,31 +71,28 @@ as.xml_document.modelname <- function(
 
 #' Evaluate xpath Expression
 #'
-#' Evaluates an xpath expression..
+#' Evaluates an xpath expression.
 #' 
 #' The resulting nodeset is scavenged for text, and coerced to best of numeric or character.
 #' @param x xml_document
 #' @param ... passed arguments
-#' @seealso \code{\link{xpath.xml_document}}
 #' @export
 #' @examples
-#' \dontrun{
-#' options('project') <- 'model'
-#' 1044 %>% xpath('//etashrink/row/col')
-#' }
-
-
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
+#' 1001 %>% xpath('//etashrink/row/col')
 xpath <- function(x,...)UseMethod('xpath')
-#' Evaluate xpath Expression in default Context
+
+#' Evaluate xpath Expression in Default Context
 #'
 #' Coerces x to xml_document and evaluates.
 #' @param x xml_document
 #' @param ... passed arguments
-#' @seealso \code{\link{xpath.xml_document}}
-#' @export
 #' @return vector
-
+#' @describeIn xpath default method
+#' @export
 xpath.default <- function(x,...)xpath(as.xml_document(x),...)
+
 #' Evaluate xpath Expression in Document Context
 #'
 #' Evaluates an xpath expression for a given document.
@@ -106,10 +103,9 @@ xpath.default <- function(x,...)xpath(as.xml_document(x),...)
 #' @param x xml_document
 #' @param xpath xpath expression to evaluate
 #' @param ... passed arguments
-#' @seealso \code{\link{xpath.default}}
-#' @export
 #' @return vector
-
+#' @describeIn xpath xml_document method
+#' @export
 xpath.xml_document <- function(x, xpath,...){
   x %>%
     xml_find_all(xpath) %>%

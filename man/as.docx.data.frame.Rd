@@ -33,10 +33,10 @@ options(project = system.file('project/model',package='partab'))
 1001 \%>\% as.partab \%>\% as.docx \%>\% as.file('1001.docx')
 }
 \seealso{
-\code{\link{ReporteRs::docx}}
+\code{\link[ReporteRs]{docx}}
 
-\code{\link{ReporteRs::addFlexTable}}
+\code{\link[ReporteRs]{addFlexTable}}
 
-\code{\link{ReporteRs::FlexTable}}
+\code{\link[ReporteRs]{FlexTable}}
 }
 

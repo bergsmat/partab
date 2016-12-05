@@ -8,10 +8,9 @@
 #' @export
 #' @return data.frame
 #' @examples
-#' \dontrun{
-#' options('project') <- 'model'
-#' 1044 %>% as.bootstrap
-#' }
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
+#' 1001 %>% as.bootstrap
 as.bootstrap <- function(x,...)UseMethod('as.bootstrap')
 as.bootstrap.bootstrap <- function(x,...)x
 as.bootstrap.numeric  <- function(x,...)as.bootstrap(as.character(x),...)
@@ -32,8 +31,9 @@ as.bootstrap.character <- function(x,...){
 #' @param hi the PsN bootstrap upper confidence limit (\%)
 #' @param verbose display messages
 #' @param ... arguments to methods
-#' @export
 #' @return data.frame
+#' @describeIn as.bootstrap filepath method
+#' @export
 
 as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',verbose=TRUE,...){
   if(verbose) message('reading ',x)
@@ -63,10 +63,9 @@ as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',ver
 #' @param pattern pattern to search for bootstrap file
 #' @param bootcsv path to bootstrap_results.csv or equivalent
 #' @param ... arguments to methods
-#' @seealso \code{\link{as.bootstrap.filepath}}
-
-#' @export
 #' @return data.frame
+#' @describeIn as.bootstrap modelname method
+#' @export
 
 
 as.bootstrap.modelname <- function(

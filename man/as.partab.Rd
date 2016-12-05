@@ -2,21 +2,36 @@
 % Please edit documentation in R/partab.R
 \name{as.partab}
 \alias{as.partab}
-\title{Create Model Parameter Table in Project Context.}
+\alias{as.partab.partab}
+\title{Create Model Parameter Table in Project Context}
 \usage{
 as.partab(x, ...)
+
+\method{as.partab}{partab}(x, ...)
 }
 \arguments{
 \item{x}{object of dispatch}
 
 \item{...}{arguments to methods}
+
+\item{x}{partab}
+
+\item{...}{arguments to methods}
 }
 \description{
 Creates a model parameter table in project context.
+
+Creates a model parameter table from a partab object.
 }
 \details{
 x can be numeric or character model name, assuming project is identified by argument or option.
+
+Just returns the object unmodified.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{partab}: partab method
+}}
 \examples{
 library(magrittr)
 options(project = system.file('project/model',package='partab'))

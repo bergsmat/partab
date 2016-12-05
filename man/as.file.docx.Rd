@@ -17,8 +17,8 @@
 Coerces docx to file.
 }
 \seealso{
-\code{\link{ReporteRs::docx}}
+\code{\link[ReporteRs]{docx}}
 
-\code{\link{ReporteRs::writeDoc}}
+\code{\link[ReporteRs]{writeDoc}}
 }
 

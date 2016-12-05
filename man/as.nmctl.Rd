@@ -17,4 +17,5 @@ nmctl
 \description{
 Coerces to NONMEM control stream object.
 }
+\keyword{internal}
 

@@ -15,10 +15,10 @@ as.flextable(x, ...)
 Coerces to flextable.
 }
 \seealso{
-\code{\link{ReporteRs::docx}}
+\code{\link[ReporteRs]{docx}}
 
-\code{\link{ReporteRs::addFlexTable}}
+\code{\link[ReporteRs]{addFlexTable}}
 
-\code{\link{ReporteRs::FlexTable}}
+\code{\link[ReporteRs]{FlexTable}}
 }
 

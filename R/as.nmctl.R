@@ -5,6 +5,7 @@
 #' @param ... dots
 #' @return nmctl
 #' @export
+#' @keywords internal
  
 as.nmctl <-
 function(x,...)UseMethod('as.nmctl')
@@ -15,6 +16,7 @@ function(x,...)UseMethod('as.nmctl')
 #' @param x object of dispatch
 #' @param ... dots
 #' @return nmctl
+#' @describeIn as.nmctl character method
 #' @export
 as.character.nmctl <-
 function(x,...){
@@ -38,6 +40,7 @@ function(x,...){
 #' @param ... dots
 #' @return list
 #' @export
+#' @keywords internal
 as.list.nmctl <-
 function(x,...)unclass(x)
 
@@ -50,6 +53,7 @@ function(x,...)unclass(x)
 #' @param parse whether to convert thetas to initList objects
 #' @param ... dots
 #' @return list
+#' @describeIn as.nmctl character method
 #' @export
 as.nmctl.character <-
 function(
@@ -91,7 +95,9 @@ function(
 #' @param x nmctl
 #' @param ... dots
 #' @return character
+#' @describeIn print.nmctl format method
 #' @export
+#' @keywords internal
 format.nmctl <-
 function(x,...)as.character(x,...)
 
@@ -104,6 +110,7 @@ function(x,...)as.character(x,...)
 #' @param ... dots
 #' @return character
 #' @export
+#' @keywords internal
 print.nmctl <-
 function(x,...)print(format(x,...))
 
@@ -115,9 +122,10 @@ function(x,...)print(format(x,...))
 #' @param con nmctl connection
 #' @param parse whether to convert thetas to initList objects
 #' @param ... dots
-#' 
 #' @return character
+#' @describeIn print.nmctl read function
 #' @export
+#' @keywords internal
 read.nmctl <-
 function(con,parse=FALSE,...)as.nmctl(readLines(con,...),parse=parse,...)
 
@@ -132,8 +140,10 @@ function(con,parse=FALSE,...)as.nmctl(readLines(con,...),parse=parse,...)
 #' @param append passed to write()
 #' @param sep passed to write()
 #' @param ... dots
-#' @return used for side effects.
+#' @return used for side effects
+#' @describeIn print.nmctl write function
 #' @export
+#' @keywords internal
 
 write.nmctl <-
 function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
@@ -156,6 +166,7 @@ function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
 #' @param drop passed to subset
 #' @return nmctl
 #' @export
+#' @keywords internal
 `[.nmctl` <- function (x, ..., drop = TRUE){
     cl <- oldClass(x)
     class(x) <- NULL
@@ -171,6 +182,7 @@ function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
 #' @param drop passed to element select
 #' @return element
 #' @export
+#' @keywords internal
 
 `[[.nmctl` <- function (x, ..., drop = TRUE)NextMethod("[[")
 
@@ -182,6 +194,7 @@ function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
 #' @param parse convert thetas to initList
 #' @param ... dots
 #' @return nmctl
+#' @describeIn as.nmctl filename method
 #' @export 
 
 as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
@@ -200,6 +213,7 @@ as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
 #' @param parse convert thetas to initList
 #' @param ... dots
 #' @return nmctl
+#' @describeIn as.nmctl modelname method
 #' @export 
 
 as.nmctl.modelname <- function(
@@ -225,6 +239,7 @@ as.nmctl.modelname <- function(
 #'@param ... dots
 #'@return nmctltype (list)
 #'@export
+#'@keywords internal
 as.nmctlType <- function(x,...)UseMethod('as.nmctlType')
 
 #' Extract nmctl record type from nmctl
@@ -235,6 +250,7 @@ as.nmctlType <- function(x,...)UseMethod('as.nmctlType')
 #'@param type theta omega or sigma
 #'@param ... dots
 #'@return nmctltype (list)
+#'@describeIn as.nmctlType nmctl method
 #'@export
 as.nmctlType.nmctl <- function(x,type,...){
   y <- x[names(x) %in% type ]
@@ -250,6 +266,7 @@ as.nmctlType.nmctl <- function(x,type,...){
 #' @param x object of dispatch
 #' @param ... dots
 #' @export
+#' @keywords internal
 as.paramComments <- function(x,...)UseMethod('as.paramComments')
 
 #' Convert nmctlType to paramComments
@@ -259,6 +276,7 @@ as.paramComments <- function(x,...)UseMethod('as.paramComments')
 #' @param x nmctlType
 #' @param ... dots
 #' @return data.frame
+#' @describeIn as.paramComments nmctlType method
 #' @export
 #' 
 as.paramComments.nmctlType <- function(x,...){
@@ -285,6 +303,7 @@ as.paramComments.nmctlType <- function(x,...){
 #' @param na string to use for NA values when writing default metafile
 #' @param ... dots
 #' @return data.frame
+#' @describeIn as.paramComments nmctl method
 #' @export
 #' 
 as.paramComments.nmctl <- function(x,fields,expected,na, ...){
@@ -321,6 +340,7 @@ as.paramComments.nmctl <- function(x,fields,expected,na, ...){
 #' @param prior number of prior parameters of this type (imporant for numbering)
 #' @param ... dots
 #' @return data.frame
+#' @describeIn as.paramComments initList method
 #' @export
 #' 
 
@@ -357,6 +377,7 @@ as.paramComments.initList <- function(x, type, prior,...){
 #' @param ... dots
 #' @return numeric
 #' @export
+#' @keywords internal
 
 ord.initList <- function(x,...){
   block <- attr(x,'block')
