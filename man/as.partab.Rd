@@ -18,10 +18,9 @@ Creates a model parameter table in project context.
 x can be numeric or character model name, assuming project is identified by argument or option.
 }
 \examples{
-\dontrun{
-options('project') <- 'model'
-1045 \%>\% as.partab
-}
+library(magrittr)
+options(project = system.file('project/model',package='partab'))
+1001 \%>\% as.partab
 }
 \seealso{
 \code{\link{as.partab.modelname}}

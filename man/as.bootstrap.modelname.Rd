@@ -20,7 +20,7 @@
 
 \item{pattern}{pattern to search for bootstrap file}
 
-\item{bootcsv}{candidate bootstrap file paths}
+\item{bootcsv}{path to bootstrap_results.csv or equivalent}
 
 \item{...}{arguments to methods}
 }

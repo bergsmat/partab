@@ -4,13 +4,16 @@
 \alias{as.partab.modelname}
 \title{Create a Parameter Table from Model name.}
 \usage{
-\method{as.partab}{modelname}(x, verbose = TRUE, lo = "2.5", hi = "97.5",
-  strip.namespace = TRUE, skip = 28, check.names = FALSE, project = if
-  (is.null(opt)) getwd() else opt, opt = getOption("project"),
+\method{as.partab}{modelname}(x, verbose = TRUE, lo = "5", hi = "95",
+  project = if (is.null(opt)) getwd() else opt, opt = getOption("project"),
   rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
-  ".meta")), digits = numeric(0), ci = FALSE, open = "(", close = ")",
+  ".meta")), xmlfile = file.path(rundir, paste0(x, ".xml")),
+  ctlfile = file.path(rundir, paste0(x, ".ctl")), bootcsv,
+  strip.namespace = TRUE, skip = 28, check.names = FALSE,
+  digits = numeric(0), ci = FALSE, open = "(", close = ")",
   sep = ", ", format = ci, fields = c("symbol", "label", "unit"),
-  relative = FALSE, percent = relative, quote = FALSE, na = ".", ...)
+  relative = FALSE, percent = relative, quote = FALSE, na = ".",
+  na.strings = na, as.is = TRUE, nonzero = TRUE, ...)
 }
 \arguments{
 \item{x}{a model name (numeric or character)}
@@ -21,12 +24,6 @@
 
 \item{hi}{the PsN bootstrap upper confidence limit (\%)}
 
-\item{strip.namespace}{whether to strip e.g. nm: from xml elements for easier xpath syntax}
-
-\item{skip}{number of lines to skip in bootstrap_results.csv}
-
-\item{check.names}{passed to bootstrap reader}
-
 \item{project}{parent directory of model directories}
 
 \item{opt}{alternative argument for setting project}
@@ -34,6 +31,18 @@
 \item{rundir}{specific model directory}
 
 \item{metafile}{metadata for parameter table; will be created if missing (edit and re-run)}
+
+\item{xmlfile}{path to xml file}
+
+\item{ctlfile}{path to control stream}
+
+\item{bootcsv}{path to PsN bootstrap_results.csv}
+
+\item{strip.namespace}{whether to strip e.g. nm: from xml elements for easier xpath syntax}
+
+\item{skip}{number of lines to skip in bootstrap_results.csv}
+
+\item{check.names}{passed to bootstrap reader}
 
 \item{digits}{limits numerics to significant digits if specified}
 
@@ -55,18 +64,35 @@
 
 \item{quote}{quote csv values when creating template metafile}
 
-\item{na}{how to encode NA in metafiles}
+\item{na}{how to encode NA in metafile}
+
+\item{na.strings}{what to read as NA in metafile}
+
+\item{as.is}{passed to read.csv for reading metafile}
+
+\item{nonzero}{limit random effects to those with nonzero estimates}
 
 \item{...}{passed to other functions}
 }
 \value{
-data.frame
+object of class partab, data.frame
 }
 \description{
 Creates a parameter table from a model name. Pass the project argument or set 
 the project option.
 }
 \details{
-Normally you can just call the generic.
+Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
+}
+\seealso{
+\code{\link{as.xml_document.modelname}}
+
+\code{\link{as.bootstrap.modelname}}
+
+\code{\link{as.nmctl.modelname}}
+
+\code{\link{write.csv}}
+
+\code{\link{read.csv}}
 }
 

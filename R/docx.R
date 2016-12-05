@@ -27,13 +27,14 @@ as.docx.docx <- function(x,...)x
 #' @param empty_template passed to docx
 #' @param list.definition passed to docx
 #' @param ... passed to addFlexTable
-#' @seealso \code{\link{docx}}
-#' @seealso \code{\link{addFlexTable}}
-#' @seealso \code{\link{FlexTable}}
+#' @seealso \code{\link{ReporteRs::docx}}
+#' @seealso \code{\link{ReporteRs::addFlexTable}}
+#' @seealso \code{\link{ReporteRs::FlexTable}}
 #' @return docx
 #' @examples
-#' options('project') <- '../project/model'
-#' 1001 %>% as.partab %>% as.docx %>% as.file('../project/model/1001/1001.docx')
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
+#' 1001 %>% as.partab %>% as.docx %>% as.file('1001.docx')
 
 #' @export
 as.docx.data.frame <- function(
@@ -44,7 +45,7 @@ as.docx.data.frame <- function(
   list.definition = getOption("ReporteRs-list-definition"),
   ...
 ){
-  require(ReporteRs)
+  requireNamespace('ReporteRs')
   doc <- docx(
     title=title,
     template=template,
@@ -58,9 +59,9 @@ as.docx.data.frame <- function(
 #' Coerces to flextable.
 #' @param x object
 #' @param ... passed to methods
-#' @seealso \code{\link{docx}}
-#' @seealso \code{\link{addFlexTable}}
-#' @seealso \code{\link{FlexTable}}
+#' @seealso \code{\link{ReporteRs::docx}}
+#' @seealso \code{\link{ReporteRs::addFlexTable}}
+#' @seealso \code{\link{ReporteRs::FlexTable}}
 #' @export
 as.flextable <- function(x,...)UseMethod('as.flextable')
 #' Coerce data.frame to flextable
@@ -68,13 +69,13 @@ as.flextable <- function(x,...)UseMethod('as.flextable')
 #' Coerces data.frame to flextable
 #' @param x data.frame
 #' @param ... passed to flextable if valid argument
-#' @seealso \code{\link{docx}}
-#' @seealso \code{\link{addFlexTable}}
-#' @seealso \code{\link{FlexTable}}
+#' @seealso \code{\link{ReporteRs::docx}}
+#' @seealso \code{\link{ReporteRs::addFlexTable}}
+#' @seealso \code{\link{ReporteRs::FlexTable}}
 #' @return flextable
 #' @export
 as.flextable.data.frame <- function(x,...){
-  require(ReporteRs)
+  requireNamespace('ReporteRs')
   dots <- list(...)
   nms <- names(dots)
   valid <- nms %in% c(
@@ -96,9 +97,9 @@ as.flextable.data.frame <- function(x,...){
 #' At present, just calls the data.frame method.
 #' @param x data.frame
 #' @param ... passed to flextable if valid argument
-#' @seealso \code{\link{docx}}
-#' @seealso \code{\link{addFlexTable}}
-#' @seealso \code{\link{FlexTable}}
+#' @seealso \code{\link{ReporteRs::docx}}
+#' @seealso \code{\link{ReporteRs::addFlexTable}}
+#' @seealso \code{\link{ReporteRs::FlexTable}}
 #' @return flextable
 #' @export
 as.flextable.partab <- function(x,...)as.flextable.data.frame(x,...)
@@ -115,8 +116,9 @@ as.file <- function(x,...)UseMethod('as.file')
 #' 
 #' Coerces docx to file.
 #' @param x docx
+#' @param file storage path for docx file
 #' @param ... passed to writeDoc
-#' @seealso \code{\link{docx}}
-#' @seealso \code{\link{writeDoc}}
+#' @seealso \code{\link{ReporteRs::docx}}
+#' @seealso \code{\link{ReporteRs::writeDoc}}
 #' @export
 as.file.docx <- function(x,file,...)writeDoc(doc=x,file=file,...)

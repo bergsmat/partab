@@ -332,7 +332,7 @@ as.paramComments.initList <- function(x, type, prior,...){
     i[[1]]
   })
   stopifnot(length(com) == length(x))
-  if(block > 0) stopifnot(block == ord(as.halfmatrix(x)))
+  if(block > 0) stopifnot(block == ord(as.halfmatrix(seq_along(x))))
   block <- block > 0
   dex <- if(block)as.data.frame(as.halfmatrix(com)) else data.frame(
     row = seq_along(com), col=seq_along(com), x=com

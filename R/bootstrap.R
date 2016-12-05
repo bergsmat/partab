@@ -61,7 +61,6 @@ as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',ver
 #' @param opt alternative specification of project
 #' @param rundir model specific run directory
 #' @param pattern pattern to search for bootstrap file
-#' @param default candidate bootstrap file paths
 #' @param bootcsv path to bootstrap_results.csv or equivalent
 #' @param ... arguments to methods
 #' @seealso \code{\link{as.bootstrap.filepath}}

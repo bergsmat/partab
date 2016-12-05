@@ -7,7 +7,8 @@
 #' @param ... arguments to methods
 #' @seealso \code{\link{as.partab.modelname}}
 #' @examples
-#' options('project') <- '../project/model'
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
 #' 1001 %>% as.partab
 #' @export
 as.partab <- function(x,...)UseMethod('as.partab')
