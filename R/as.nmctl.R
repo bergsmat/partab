@@ -16,8 +16,8 @@ function(x,...)UseMethod('as.nmctl')
 #' @param x object of dispatch
 #' @param ... dots
 #' @return nmctl
-#' @describeIn as.nmctl character method
 #' @export
+#' @keywords internal
 as.character.nmctl <-
 function(x,...){
 	if(length(x)==0) return(character(0))
@@ -95,7 +95,6 @@ function(
 #' @param x nmctl
 #' @param ... dots
 #' @return character
-#' @describeIn print.nmctl format method
 #' @export
 #' @keywords internal
 format.nmctl <-
@@ -123,7 +122,6 @@ function(x,...)print(format(x,...))
 #' @param parse whether to convert thetas to initList objects
 #' @param ... dots
 #' @return character
-#' @describeIn print.nmctl read function
 #' @export
 #' @keywords internal
 read.nmctl <-
@@ -141,7 +139,6 @@ function(con,parse=FALSE,...)as.nmctl(readLines(con,...),parse=parse,...)
 #' @param sep passed to write()
 #' @param ... dots
 #' @return used for side effects
-#' @describeIn print.nmctl write function
 #' @export
 #' @keywords internal
 
@@ -215,7 +212,6 @@ as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
 #' @return nmctl
 #' @describeIn as.nmctl modelname method
 #' @export 
-
 as.nmctl.modelname <- function(
   x,
   verbose=TRUE,

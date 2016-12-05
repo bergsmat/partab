@@ -25,6 +25,7 @@ as.init <- function(x,...)UseMethod('as.init')
 #' @describeIn as.init init method
 #' @export
 as.init.init <- function(x=numeric(0),fixed=FALSE,comment=character(0),...)as.init.numeric(x=x,fixed=fixed,comment=comment,...)
+
 #' Coerces numeric to init
 #' @param x numeric
 #' @param fixed logical
@@ -91,8 +92,8 @@ as.character.init <- function(x,...){
 #' @param x init
 #' @param ... dots
 #' @return character
-#' @describeIn as.character.init format method
 #' @export
+#' @keywords internal
 format.init <-function(x,...)as.character(x,...)
 #' Print init
 #' 
@@ -100,9 +101,10 @@ format.init <-function(x,...)as.character(x,...)
 #' @param x init
 #' @param ... dots
 #' @return character
-#' @describeIn as.character.init print method
 #' @export
+#' @keywords internal
 print.init <-function(x,...)print(format(x,...))
+
 #' Check if something is fixed
 #' 
 #' Checks if something is fixed
@@ -111,13 +113,14 @@ print.init <-function(x,...)print(format(x,...))
 #' @export
 #' @keywords internal
 fixed <- function(x,...)UseMethod('fixed')
+
 #' Set value of fixed attribute
 #' 
 #' Sets value of fixed attribute.
 #' @param x object
 #' @param value value to set
-#' @describeIn fixed set value
 #' @export
+#' @keywords internal
 `fixed<-` <- function(x,value)UseMethod('fixed<-')
 
 #' Check if init is fixed
@@ -136,7 +139,7 @@ fixed.init <- function(x,...)!any(is.na(x)) & length(unique(x)) == 1
 #' @param x object
 #' @param value value to
 #' @return init
-#' @describeIn fixed set fixed for init
+#' @describeIn `fixed<-` init method
 #' @export
 `fixed<-.init` <- function(x,value){
   stopifnot(is.logical(value))
@@ -167,7 +170,7 @@ as.initList <- function(x,...)UseMethod('as.initList')
 #' @param comment character
 #' @param ... dots
 #' @return initList
-#' @describeIn as.initList
+#' @describeIn as.initList list method
 #' @export
 as.initList.list <- function(x,comment=character(0),...){
   stopifnot(length(x)>0,is.character(comment))
@@ -198,8 +201,8 @@ as.character.initList <- function(x,...){
 #' @param x initList
 #' @param ... dots
 #' @return character
-#' @describeIn as.character.initList format method
 #' @export
+#' @keywords internal
 format.initList <-function(x,...)as.character(x,...)
 
 #' Print initList
@@ -208,8 +211,8 @@ format.initList <-function(x,...)as.character(x,...)
 #' @param x initList
 #' @param ... dots
 #' @return character
-#' @describeIn as.character.initList print method
 #' @export
+#' @keywords internal
 print.initList <-function(x,...)print(format(x,...))
 .comments <- function(x)sub('^[^;]*;?(.*)$','\\1',x)
 .space2comma <- function(x){
@@ -229,8 +232,8 @@ print.initList <-function(x,...)print(format(x,...))
 #' @param ... dots
 #' @param drop logical
 #' @return initList
-#' @describeIn as.character.initList subset method
 #' @export
+#' @keywords internal
 `[.initList` <- function (x, ..., drop = TRUE){
   cl <- oldClass(x)
   class(x) <- NULL
@@ -265,8 +268,8 @@ as.initList.numeric <- function(x,fixed=FALSE,comment=character(0),...){
 #' @param x init
 #' @param name character
 #' @return numeric
-#' @describeIn as.character.initList element select method
 #' @export
+#' @keywords internal
 `$.init` <- function(x,name)x[[name]]
 #' Set init element
 #' 
@@ -275,8 +278,8 @@ as.initList.numeric <- function(x,fixed=FALSE,comment=character(0),...){
 #' @param name character
 #' @param value numeric
 #' @return init
-#' @describeIn as.character.initList element assign method
 #' @export
+#' @keywords internal
 `$<-.init` <- function(x,name,value){
   if(!name %in% c('low','init','up'))stop('attempt to set an invalid init element')
   if(is.null(value))stop('attempt to delete a required init element')
@@ -299,7 +302,7 @@ fixed.initList <- function(x,...)sapply(x,fixed)
 #' @param x initList
 #' @param value logical
 #' @return initList
-#' @describeIn fixed initList assign method
+#' @describeIn `fixed<-` initList method
 #' @export
 `fixed<-.initList` <- function(x,value){
 	stopifnot(is.logical(value))

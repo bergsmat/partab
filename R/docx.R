@@ -20,21 +20,6 @@ as.docx <- function(x,...)UseMethod('as.docx')
 #' @export
 as.docx.docx <- function(x,...)x
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #' Coerce data.frame to docx
 #' 
 #' Coerces data.frame to docx
@@ -71,11 +56,6 @@ as.docx.data.frame <- function(
   )
   doc %<>% ReporteRs::addFlexTable(as.flextable(x,...),...)
 }
-
-
-
-
-
 
 #' Coerce partab to docx
 #' 
