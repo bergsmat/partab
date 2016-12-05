@@ -6,10 +6,6 @@
 #' @param x object of dispatch
 #' @param ... arguments to methods
 #' @seealso \code{\link{as.partab.modelname}}
-#' @examples
-#' library(magrittr)
-#' options(project = system.file('project/model',package='partab'))
-#' 1001 %>% as.partab
 #' @export
 as.partab <- function(x,...)UseMethod('as.partab')
 #' Create Model Parameter Table from partab
@@ -110,7 +106,10 @@ row_col <- function(x, xpath, param, moment,...){
 #' @seealso \code{\link{write.csv}}
 #' @seealso \code{\link{read.csv}}
 #' @aliases partab
-
+#' @examples
+#' library(magrittr)
+#' options(project = system.file('project/model',package='partab'))
+#' 1001 %>% as.partab
 #' @return object of class partab, data.frame
 #' @export
 

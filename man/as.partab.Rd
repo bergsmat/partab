@@ -46,11 +46,6 @@ Reclassifies x as a modelname and calls as.partab again.
 
 \item \code{character}: character method
 }}
-\examples{
-library(magrittr)
-options(project = system.file('project/model',package='partab'))
-1001 \%>\% as.partab
-}
 \seealso{
 \code{\link{as.partab.modelname}}
 }

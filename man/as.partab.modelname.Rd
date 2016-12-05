@@ -85,6 +85,11 @@ the project option.
 \details{
 Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
 }
+\examples{
+library(magrittr)
+options(project = system.file('project/model',package='partab'))
+1001 \%>\% as.partab
+}
 \seealso{
 \code{\link{as.docx.partab}}
 
