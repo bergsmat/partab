@@ -2,28 +2,57 @@
 % Please edit documentation in R/xpath.R
 \name{xpath}
 \alias{xpath}
+\alias{xpath.default}
+\alias{xpath.xml_document}
 \title{Evaluate xpath Expression}
 \usage{
 xpath(x, ...)
+
+\method{xpath}{default}(x, ...)
+
+\method{xpath}{xml_document}(x, xpath, ...)
 }
 \arguments{
 \item{x}{xml_document}
 
 \item{...}{passed arguments}
+
+\item{xpath}{xpath expression to evaluate}
+
+\item{x}{xml_document}
+
+\item{...}{passed arguments}
+
+\item{x}{xml_document}
+
+\item{...}{passed arguments}
+}
+\value{
+vector
+
+vector
 }
 \description{
-Evaluates an xpath expression..
+Evaluates an xpath expression.
+
+Coerces x to xml_document and evaluates.
+
+Evaluates an xpath expression for a given document.
 }
 \details{
 The resulting nodeset is scavenged for text, and coerced to best of numeric or character.
+
+The resulting nodeset is scavenged for text, and coerced to best of numeric or character.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{default}: default method
+
+\item \code{xml_document}: xml_document method
+}}
 \examples{
-\dontrun{
-options('project') <- 'model'
-1044 \%>\% xpath('//etashrink/row/col')
-}
-}
-\seealso{
-\code{\link{xpath.xml_document}}
+library(magrittr)
+options(project = system.file('project/model',package='partab'))
+1001 \%>\% xpath('//etashrink/row/col')
 }
 

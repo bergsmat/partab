@@ -2,19 +2,63 @@
 % Please edit documentation in R/docx.R
 \name{as.flextable}
 \alias{as.flextable}
+\alias{as.flextable.data.frame}
+\alias{as.flextable.partab}
 \title{Coerce to flextable}
 \usage{
 as.flextable(x, ...)
+
+\method{as.flextable}{data.frame}(x, ...)
+
+\method{as.flextable}{partab}(x, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{passed to methods}
+
+\item{x}{data.frame}
+
+\item{...}{passed to flextable if valid argument}
+
+\item{x}{data.frame}
+
+\item{...}{passed to flextable if valid argument}
+}
+\value{
+flextable
+
+flextable
 }
 \description{
 Coerces to flextable.
+
+Coerces data.frame to flextable
+
+Coerces partab to flextable.
 }
+\details{
+At present, just calls the data.frame method.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{data.frame}: data.frame method
+
+\item \code{partab}: partab method
+}}
 \seealso{
+\code{\link[ReporteRs]{docx}}
+
+\code{\link[ReporteRs]{addFlexTable}}
+
+\code{\link[ReporteRs]{FlexTable}}
+
+\code{\link[ReporteRs]{docx}}
+
+\code{\link[ReporteRs]{addFlexTable}}
+
+\code{\link[ReporteRs]{FlexTable}}
+
 \code{\link[ReporteRs]{docx}}
 
 \code{\link[ReporteRs]{addFlexTable}}

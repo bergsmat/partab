@@ -2,16 +2,70 @@
 % Please edit documentation in R/as.init.R
 \name{tweak}
 \alias{tweak}
+\alias{tweak.init}
+\alias{tweak.initList}
+\alias{tweak.nmctl}
 \title{Tweak something}
 \usage{
 tweak(x, ...)
+
+\method{tweak}{init}(x, sd = 0.13, digits = 3, ...)
+
+\method{tweak}{initList}(x, sd = 0.13, digits = 3, ...)
+
+\method{tweak}{nmctl}(x, sd = 0.13, digits = 3, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{dots}
+
+\item{sd}{numeric}
+
+\item{digits}{integer}
+
+\item{x}{init}
+
+\item{...}{dots}
+
+\item{x}{initList}
+
+\item{sd}{numeric}
+
+\item{digits}{integer}
+
+\item{...}{dots}
+
+\item{x}{nmctl}
+
+\item{sd}{numeric}
+
+\item{digits}{integer}
+
+\item{...}{dots}
+}
+\value{
+init
+
+initList
+
+nmctl
 }
 \description{
 Tweaks something.
+
+Tweaks init.
+
+Tweaks initList.
+
+Tweaks nmctl.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{init}: init method
+
+\item \code{initList}: initList method
+
+\item \code{nmctl}: nmctl method
+}}
 

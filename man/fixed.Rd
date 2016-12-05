@@ -2,16 +2,46 @@
 % Please edit documentation in R/as.init.R
 \name{fixed}
 \alias{fixed}
+\alias{fixed.init}
+\alias{fixed.initList}
 \title{Check if something is fixed}
 \usage{
 fixed(x, ...)
+
+\method{fixed}{init}(x, ...)
+
+\method{fixed}{initList}(x, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{dots}
+
+\item{x}{object}
+
+\item{...}{dots}
+
+\item{x}{initList}
+
+\item{...}{dots}
+}
+\value{
+logical
+
+logical
 }
 \description{
 Checks if something is fixed
+
+Checks if init is fixed.
+
+Checks if initList is fixed.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{init}: init method
+
+\item \code{initList}: initList method
+}}
+\keyword{internal}
 

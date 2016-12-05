@@ -2,20 +2,90 @@
 % Please edit documentation in R/as.nmctl.R
 \name{as.nmctl}
 \alias{as.nmctl}
+\alias{as.nmctl.character}
+\alias{as.nmctl.filename}
+\alias{as.nmctl.modelname}
 \title{Coerce to NONMEM Control Object}
 \usage{
 as.nmctl(x, ...)
+
+\method{as.nmctl}{character}(x, pattern = "^ *\\\\$([^ ]+)( .*)?$",
+  head = "\\\\1", tail = "\\\\2", parse = FALSE, ...)
+
+\method{as.nmctl}{filename}(x, parse, ...)
+
+\method{as.nmctl}{modelname}(x, verbose = TRUE, project = if (is.null(opt))
+  getwd() else opt, opt = getOption("project"), rundir = file.path(project,
+  x), ctlfile = file.path(rundir, paste0(x, ext)), ext = ".ctl",
+  parse = TRUE, ...)
 }
 \arguments{
 \item{x}{object of dispatch}
 
 \item{...}{dots}
+
+\item{pattern}{pattern to identify record declarations}
+
+\item{head}{subpattern to identify declaration type}
+
+\item{tail}{subpattern remaining}
+
+\item{parse}{whether to convert thetas to initList objects}
+
+\item{verbose}{whether to display messages}
+
+\item{project}{path to project directory}
+
+\item{opt}{alternative specification of project}
+
+\item{rundir}{model specific run directory}
+
+\item{ctlfile}{path to model control stream}
+
+\item{ext}{extension (with dot) for control stream}
+
+\item{x}{character}
+
+\item{...}{dots}
+
+\item{x}{filename}
+
+\item{parse}{convert thetas to initList}
+
+\item{...}{dots}
+
+\item{x}{modelname}
+
+\item{parse}{convert thetas to initList}
+
+\item{...}{dots}
 }
 \value{
+nmctl
+
+list
+
+nmctl
+
 nmctl
 }
 \description{
 Coerces to NONMEM control stream object.
+
+Coerce character to nmctl
+Coerces chacter to nmctl.
+
+Converts filename to nmctl.
+
+Converts modelname to nmctl.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{character}: character method
+
+\item \code{filename}: filename method
+
+\item \code{modelname}: modelname method
+}}
 \keyword{internal}
 

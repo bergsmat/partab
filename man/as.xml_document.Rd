@@ -2,25 +2,67 @@
 % Please edit documentation in R/xpath.R
 \name{as.xml_document}
 \alias{as.xml_document}
+\alias{as.xml_document.filepath}
+\alias{as.xml_document.modelname}
 \title{Create an xml_document in a Project Context}
 \usage{
 as.xml_document(x, ...)
+
+\method{as.xml_document}{filepath}(x, strip.namespace = TRUE, ...)
+
+\method{as.xml_document}{modelname}(x, project = if (is.null(opt)) getwd()
+  else opt, opt = getOption("project"), rundir = file.path(project, x),
+  file = file.path(rundir, paste0(x, ".xml")), ...)
 }
 \arguments{
 \item{x}{object of dispatch}
 
 \item{...}{arguments to methods}
+
+\item{strip.namespace}{whether to strip e.g. nm: from xml elements}
+
+\item{project}{parent directory of model directories}
+
+\item{opt}{alternative argument for setting project}
+
+\item{rundir}{specific model directory}
+
+\item{file}{actual xml storage location; overrides others if specified directly}
+
+\item{x}{filepath}
+
+\item{...}{passed arguments}
+
+\item{x}{filename}
+
+\item{...}{passed arguments}
 }
 \value{
+xml_document
+
+xml_document
+
 xml_document
 }
 \description{
 Creates an xml_document in a project context.
+
+Creates an xml_document from filepath
+
+Creates an xml_document from modelname
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{filepath}: filepath method
+
+\item \code{modelname}: modelname method
+}}
 \examples{
-\dontrun{
-options('project') <- 'model'
-1044 \%>\% as.xml_document
+library(magrittr)
+options(project = system.file('project/model',package='partab'))
+1001 \%>\% as.xml_document
 }
+\seealso{
+\code{\link{xpath}}
 }
 

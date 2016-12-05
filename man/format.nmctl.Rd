@@ -20,4 +20,5 @@ Format nmctl.
 \details{
 Coerces to character.
 }
+\keyword{internal}
 

@@ -19,4 +19,5 @@ init
 \description{
 Sets init element.
 }
+\keyword{internal}
 

@@ -22,4 +22,5 @@ Read nmctl.
 \details{
 Reads nmctl from a connection.
 }
+\keyword{internal}
 

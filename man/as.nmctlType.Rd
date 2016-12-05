@@ -2,19 +2,37 @@
 % Please edit documentation in R/as.nmctl.R
 \name{as.nmctlType}
 \alias{as.nmctlType}
+\alias{as.nmctlType.nmctl}
 \title{Extract nmctl record type}
 \usage{
 as.nmctlType(x, ...)
+
+\method{as.nmctlType}{nmctl}(x, type, ...)
 }
 \arguments{
+\item{x}{nmctl}
+
+\item{...}{dots}
+
+\item{type}{theta omega or sigma}
+
 \item{x}{nmctl}
 
 \item{...}{dots}
 }
 \value{
 nmctltype (list)
+
+nmctltype (list)
 }
 \description{
 Extracts nmctl record type.
+
+Extracts nmctl record type from nmctl.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{nmctl}: nmctl method
+}}
+\keyword{internal}
 

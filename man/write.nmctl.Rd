@@ -21,7 +21,7 @@ write.nmctl(x, file = "data", ncolumns = 1, append = FALSE, sep = " ",
 \item{...}{dots}
 }
 \value{
-used for side effects.
+used for side effects
 }
 \description{
 Write nmctl.
@@ -29,4 +29,5 @@ Write nmctl.
 \details{
 writes (formatted) nmctl to file.
 }
+\keyword{internal}
 

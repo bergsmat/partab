@@ -2,19 +2,59 @@
 % Please edit documentation in R/contains.R
 \name{as.best}
 \alias{as.best}
+\alias{as.best.data.frame}
+\alias{as.best.default}
 \title{Convert to Best of Numeric or Character}
 \usage{
 as.best(x, ...)
+
+\method{as.best}{data.frame}(x, prefix = "#", ...)
+
+\method{as.best}{default}(x, prefix = "", na.strings = c(".", "NA", ""),
+  ...)
 }
 \arguments{
 \item{x}{vector or data.frame}
 
 \item{...}{passed to other methods}
+
+\item{prefix}{character to prepend to values in mixed numeric/character columns}
+
+\item{na.strings}{strings to treat as NA}
+
+\item{x}{data.frame}
+
+\item{...}{passed to other methods}
+
+\item{x}{vector}
+
+\item{prefix}{character to prepend to values in mixed numeric/character columns}
+
+\item{...}{passed to other methods}
+}
+\value{
+data.frame
+
+vector
 }
 \description{
 Convert to best of numeric or character.
+
+Convert data.frame columns to best of numeric or character.
+
+Convert vector to best of numeric or character.
 }
 \details{
 Converts to numeric if doing so creates no new NA; otherwise to character.
+
+Converts columns to numeric if doing so creates no new NA; otherwise to character. Number-like columns that are nevertheless character are prefixed by default to make this explicit when viewing only a few rows.
+
+Converts vector to numeric if doing so creates no new NA; otherwise to character. Number-like vectors that are nevertheless character are prefixed by default to make this explicit when viewing only a few rows.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{data.frame}: data.frame method
+
+\item \code{default}: default method
+}}
 

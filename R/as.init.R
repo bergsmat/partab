@@ -139,8 +139,8 @@ fixed.init <- function(x,...)!any(is.na(x)) & length(unique(x)) == 1
 #' @param x object
 #' @param value value to
 #' @return init
-#' @describeIn `fixed<-` init method
 #' @export
+#' @keywords internal
 `fixed<-.init` <- function(x,value){
   stopifnot(is.logical(value))
   if(is.na(value))stop('NA found where logical required')
@@ -302,8 +302,8 @@ fixed.initList <- function(x,...)sapply(x,fixed)
 #' @param x initList
 #' @param value logical
 #' @return initList
-#' @describeIn `fixed<-` initList method
 #' @export
+#' @keywords internal
 `fixed<-.initList` <- function(x,value){
 	stopifnot(is.logical(value))
 	value <- rep(value,length.out=length(x))

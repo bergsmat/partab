@@ -17,4 +17,5 @@ character
 \description{
 Prints init.
 }
+\keyword{internal}
 

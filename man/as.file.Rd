@@ -2,16 +2,36 @@
 % Please edit documentation in R/docx.R
 \name{as.file}
 \alias{as.file}
+\alias{as.file.docx}
 \title{Coerce to file}
 \usage{
 as.file(x, ...)
+
+\method{as.file}{docx}(x, file, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{passed to methods}
+
+\item{file}{storage path for docx file}
+
+\item{x}{docx}
+
+\item{...}{passed to writeDoc}
 }
 \description{
 Coerces to file.
+
+Coerces docx to file.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{docx}: docx method
+}}
+\seealso{
+\code{\link[ReporteRs]{docx}}
+
+\code{\link[ReporteRs]{writeDoc}}
 }
 

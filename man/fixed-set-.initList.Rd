@@ -17,4 +17,5 @@ initList
 \description{
 Sets fixed attribute of initList.
 }
+\keyword{internal}
 

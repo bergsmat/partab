@@ -3,7 +3,7 @@
 \name{as.partab.modelname}
 \alias{as.partab.modelname}
 \alias{partab}
-\title{Create a Parameter Table from Model name.}
+\title{Create a Parameter Table from Model Name}
 \usage{
 \method{as.partab}{modelname}(x, verbose = TRUE, lo = "5", hi = "95",
   project = if (is.null(opt)) getwd() else opt, opt = getOption("project"),

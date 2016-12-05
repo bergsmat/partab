@@ -19,4 +19,5 @@ initList
 \description{
 Subsets initList.
 }
+\keyword{internal}
 

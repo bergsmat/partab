@@ -2,26 +2,80 @@
 % Please edit documentation in R/bootstrap.R
 \name{as.bootstrap}
 \alias{as.bootstrap}
+\alias{as.bootstrap.filepath}
+\alias{as.bootstrap.modelname}
 \title{Create a Bootstrap Table}
 \usage{
 as.bootstrap(x, ...)
+
+\method{as.bootstrap}{filepath}(x, skip = 28, check.names = FALSE,
+  lo = "5", hi = "95", verbose = TRUE, ...)
+
+\method{as.bootstrap}{modelname}(x, project = if (is.null(opt)) getwd() else
+  opt, opt = getOption("project"), rundir = file.path(project, x),
+  pattern = "bootstrap_results.csv", bootcsv = dir(rundir, pattern =
+  pattern, recursive = TRUE, full.names = TRUE), ...)
 }
 \arguments{
+\item{x}{object of dispatch}
+
+\item{...}{arguments to methods}
+
+\item{skip}{number of lines to skip in bootstrap_results.csv}
+
+\item{check.names}{passed to bootstrap reader}
+
+\item{lo}{the PsN bootstrap lower confidence limit (\%)}
+
+\item{hi}{the PsN bootstrap upper confidence limit (\%)}
+
+\item{verbose}{display messages}
+
+\item{project}{path to model directories}
+
+\item{opt}{alternative specification of project}
+
+\item{rundir}{model specific run directory}
+
+\item{pattern}{pattern to search for bootstrap file}
+
+\item{bootcsv}{path to bootstrap_results.csv or equivalent}
+
+\item{x}{object of dispatch}
+
+\item{...}{arguments to methods}
+
 \item{x}{object of dispatch}
 
 \item{...}{arguments to methods}
 }
 \value{
 data.frame
+
+data.frame
+
+data.frame
 }
 \description{
 Creates a bootstrap table.
+
+Creates a bootstrap table from a PsN bootstrap results csv filepath.
+
+Creates a bootstrap table from a modelname in Project Context.
 }
+\details{
+Assumes project has been identified, model directory exists, and PsN bootstrap method has been run for the model.  Scavenges for the last file matching pattern.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{filepath}: filepath method
+
+\item \code{modelname}: modelname method
+}}
 \examples{
-\dontrun{
-options('project') <- 'model'
-1044 \%>\% as.bootstrap
-}
+library(magrittr)
+options(project = system.file('project/model',package='partab'))
+1001 \%>\% as.bootstrap
 }
 \seealso{
 \code{\link{as.bootstrap.modelname}}

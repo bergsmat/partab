@@ -17,4 +17,5 @@ init
 \description{
 Sets fixed init value.
 }
+\keyword{internal}
 

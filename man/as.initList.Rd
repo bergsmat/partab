@@ -2,16 +2,78 @@
 % Please edit documentation in R/as.init.R
 \name{as.initList}
 \alias{as.initList}
+\alias{as.initList.character}
+\alias{as.initList.initList}
+\alias{as.initList.list}
+\alias{as.initList.numeric}
 \title{Coerce to initList}
 \usage{
 as.initList(x, ...)
+
+\method{as.initList}{list}(x, comment = character(0), ...)
+
+\method{as.initList}{numeric}(x, fixed = FALSE, comment = character(0), ...)
+
+\method{as.initList}{character}(x, ...)
+
+\method{as.initList}{initList}(x, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{dots}
+
+\item{comment}{character}
+
+\item{fixed}{logical}
+
+\item{x}{list}
+
+\item{...}{dots}
+
+\item{x}{numeric}
+
+\item{comment}{character}
+
+\item{...}{dots}
+
+\item{x}{character}
+
+\item{...}{dots}
+
+\item{x}{initList}
+
+\item{...}{dots}
+}
+\value{
+initList
+
+initList
+
+initList
+
+initList
 }
 \description{
 Coerces to initList.
+
+Coerces list to initlist.
+
+Coerces numeric to initList
+
+Coerces character to initList.
+
+Coerces initList to initList
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{list}: list method
+
+\item \code{numeric}: numeric method
+
+\item \code{character}: character method
+
+\item \code{initList}: initList method
+}}
+\keyword{internal}
 

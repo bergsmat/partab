@@ -20,4 +20,5 @@ Print nmctl.
 \details{
 Formats and prints.
 }
+\keyword{internal}
 

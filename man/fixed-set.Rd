@@ -14,4 +14,5 @@ fixed(x) <- value
 \description{
 Sets value of fixed attribute.
 }
+\keyword{internal}
 

@@ -17,4 +17,5 @@ character
 \description{
 Coerces init to character.
 }
+\keyword{internal}
 

@@ -17,4 +17,5 @@ list
 \description{
 Coerces nmctl to list.
 }
+\keyword{internal}
 

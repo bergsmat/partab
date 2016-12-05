@@ -2,16 +2,69 @@
 % Please edit documentation in R/as.nmctl.R
 \name{as.paramComments}
 \alias{as.paramComments}
+\alias{as.paramComments.initList}
+\alias{as.paramComments.nmctl}
+\alias{as.paramComments.nmctlType}
 \title{Coerce to paramComments}
 \usage{
 as.paramComments(x, ...)
+
+\method{as.paramComments}{nmctlType}(x, ...)
+
+\method{as.paramComments}{nmctl}(x, fields, expected, na, ...)
+
+\method{as.paramComments}{initList}(x, type, prior, ...)
 }
 \arguments{
 \item{x}{object of dispatch}
 
 \item{...}{dots}
+
+\item{fields}{data items to scavenge from control stream comments}
+
+\item{expected}{parameters known from NONMEM output}
+
+\item{na}{string to use for NA values when writing default metafile}
+
+\item{type}{parameter type: theta, omega,or sigma}
+
+\item{prior}{number of prior parameters of this type (imporant for numbering)}
+
+\item{x}{nmctlType}
+
+\item{...}{dots}
+
+\item{x}{nmctl}
+
+\item{...}{dots}
+
+\item{x}{initlist}
+
+\item{...}{dots}
+}
+\value{
+data.frame
+
+data.frame
+
+data.frame
 }
 \description{
 Coerces to paramComments
+
+Converts nmctlType to paramComments
+
+Converts nmctl to paramComments
+
+Converts initList to paramComments
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{nmctlType}: nmctlType method
+
+\item \code{nmctl}: nmctl method
+
+\item \code{initList}: initList method
+}}
+\keyword{internal}
 

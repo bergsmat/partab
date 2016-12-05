@@ -17,4 +17,5 @@ numeric
 \description{
 Selects init element.
 }
+\keyword{internal}
 

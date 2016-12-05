@@ -19,4 +19,5 @@ nmctl
 \description{
 Subsets nmctl.
 }
+\keyword{internal}
 

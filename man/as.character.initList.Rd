@@ -17,4 +17,5 @@ character
 \description{
 Coerces initList to character.
 }
+\keyword{internal}
 

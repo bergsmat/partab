@@ -17,4 +17,5 @@ character
 \description{
 Formats initList.
 }
+\keyword{internal}
 

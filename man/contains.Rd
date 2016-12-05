@@ -2,9 +2,27 @@
 % Please edit documentation in R/contains.R
 \name{contains}
 \alias{contains}
+\alias{enclose}
+\alias{is.defined}
+\alias{padded}
+\alias{parens}
+\alias{pool}
+\alias{text2decimal}
 \title{Check Whether Text Contains Pattern}
 \usage{
 contains(pattern, text, ...)
+
+text2decimal(x)
+
+is.defined(x)
+
+pool(x, y)
+
+parens(x, ...)
+
+enclose(x, open, close, ...)
+
+padded(x, width = 4, ...)
 }
 \arguments{
 \item{pattern}{regular expression}
@@ -12,15 +30,82 @@ contains(pattern, text, ...)
 \item{text}{character vector to check}
 
 \item{...}{arguments to methods}
+
+\item{x}{character}
+
+\item{y}{vector}
+
+\item{open}{open string}
+
+\item{close}{close string}
+
+\item{width}{desired number of characters}
+
+\item{x}{vector}
+
+\item{x}{vector}
+
+\item{x}{vector}
+
+\item{...}{dots}
+
+\item{x}{vector}
+
+\item{...}{dots}
+
+\item{x}{numeric}
+
+\item{...}{ignored}
 }
 \value{
 logical
+
+numeric
+
+logical
+
+list: unique x, unique y, and intersection
+
+character
+
+character
+
+character
 }
 \description{
 Checks whether text contains pattern.
+
+Scavenge text for first reasonably-inferred numeric value.
+
+Checks whether elements are defined.  Inverse of is.na().
+
+Compare sets by evaluating both set differences, and the intersection.
+
+Enclose in parentheses
+
+Enclose in arbitrary characters
+
+Pad a numeric vector with leading zeros.
 }
+\section{Functions}{
+\itemize{
+\item \code{text2decimal}: text2decimal
+
+\item \code{is.defined}: is.defined
+
+\item \code{pool}: pool
+
+\item \code{parens}: parens
+
+\item \code{enclose}: enclose
+
+\item \code{padded}: padded
+}}
 \examples{
 contains('a',letters)
+text2decimal('30 mg')
+is.defined(c(1,NA,2))
+pool(1:3,2:4)
 }
 \seealso{
 \code{\link{\%contains\%}}
