@@ -1,6 +1,6 @@
 $PROBLEM //like/1001//but/2 CMT//
 $INPUT C ID TIME SEQ=DROP EVID AMT DV SUBJ HOUR HEIGHT WT SEX AGE DOSE FED
-$DATA ../../data/derived/phase1.csv IGNORE=C
+$DATA ../../data/derived/drug.csv IGNORE=C
 $SUBROUTINE ADVAN4 TRANS4
 $PK
  CL=THETA(1)*EXP(ETA(1)) * THETA(6)**SEX * (WT/70)**THETA(7)
@@ -35,7 +35,26 @@ $SIGMA
 0.1           ;ERR_PROP;proportional error
 0.1           ;ERR_ADD;additive error
 
-$ESTIMATION MAXEVAL=9999 PRINT=5 NOABORT METHOD=1 INTER MSFO=./1005.msf
+$ESTIMATION MAXEVAL=9999 PRINT=5 NOABORT METHOD=1 INTER MSFO=mod.msf
 $COV PRINT=E
-$TABLE NOPRINT FILE=./1005.tab ONEHEADER ID AMT TIME EVID PRED IPRE CWRES
-$TABLE NOPRINT FILE=./1005par.tab ONEHEADER ID TIME CL Q V2 V3 KA ETA1 ETA2 ETA3
+$TABLE NOPRINT FILE=mod.tab ONEHEADER 
+ID            ;ID;NONMEM subject identifier;
+AMT           ;AMT;dose amount;mg
+TIME          ;TIME;time;h
+EVID          ;EVID;event type;//0/observation//1/dose
+PRED          ;PRED;population prediction;ng/mL
+IPRE          ;IPRED;individual prediction;ng/mL
+CWRESI        ;CWRESI;conditional weighted residual;
+CIWRESI       ;CIWRESI;conditional indvividual weighted residual;
+
+$TABLE NOPRINT FILE=mod2.tab ONEHEADER 
+ID            ;ID;subject identifier
+TIME          ;TIME;time;h
+CL            ;CLI;posthoc systemic clearance;L/h
+V2            ;V2I;posthoc systemic volume;L
+KA            ;KAI;posthoc absorption rate;1/h
+Q             ;Q2I;posthoc intercompartmental clearance;1/h
+V3            ;V3I;posthoc peripheral volume;L
+ETA1          ;BSV_CL;clearance between-subject variability;
+ETA2          ;BSV_V2;volume between-subject variability;
+ETA3          ;BSV_KA;absorption between-subject variability;

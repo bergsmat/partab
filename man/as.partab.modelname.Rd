@@ -8,7 +8,7 @@
 \method{as.partab}{modelname}(x, verbose = TRUE, lo = "5", hi = "95",
   project = if (is.null(opt)) getwd() else opt, opt = getOption("project"),
   rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
-  ".meta")), xmlfile = file.path(rundir, paste0(x, ".xml")),
+  ".par")), xmlfile = file.path(rundir, paste0(x, ".xml")),
   ctlfile = file.path(rundir, paste0(x, ".ctl")), bootcsv,
   strip.namespace = TRUE, skip = 28, check.names = FALSE,
   digits = numeric(0), ci = FALSE, open = "(", close = ")",

@@ -44,19 +44,19 @@ val_name <- function(x, xpath, param, moment,...){
   valpath   <- paste0(tokenpath,'/@name')
   dat <- data.frame(
     stringsAsFactors=FALSE,
-    par = x %>% xpath(valpath) %>% padded(2),
+    parameter = x %>% xpath(valpath) %>% padded(2),
     x = x %>% xpath(tokenpath) %>% as.numeric
   )
-  dat %<>% mutate(par = paste(sep='_',param,par))
+  dat %<>% mutate(parameter = paste(sep='_',param,parameter))
   names(dat)[names(dat) == 'x'] <- moment
   dat
 }
 row_col <- function(x, xpath, param, moment,...){
   tokenpath <- paste0('//',xpath,'/row/col')
   dat <- x %>% xpath(tokenpath) %>% as.halfmatrix %>% as.data.frame
-  dat %<>% mutate(par = paste(sep='_',param,row %>% padded(2),col %>% padded(2)))
+  dat %<>% mutate(parameter = paste(sep='_',param,row %>% padded(2),col %>% padded(2)))
   dat %<>% mutate(offdiag = as.integer(row != col))
-  dat %<>% select(par,x, offdiag)
+  dat %<>% select(parameter,x, offdiag)
   names(dat)[names(dat) == 'x'] <- moment
   dat
 }
@@ -92,10 +92,6 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param fields metadata fields to read from control stream if no metafile
 #' @param relative transform standard errors to relative standard errors: rse replaces se
 #' @param percent if relative is true, express as percent (else ignore): prse replaces se
-#' @param quote quote csv values when creating template metafile
-#' @param na how to encode NA in metafile
-#' @param na.strings what to read as NA in metafile 
-#' @param as.is passed to read.csv for reading metafile
 #' @param nonzero limit random effects to those with nonzero estimates
 #' @param ... passed to other functions
 #' @seealso \code{\link{as.docx.partab}}
@@ -112,36 +108,30 @@ row_col <- function(x, xpath, param, moment,...){
 #' 1001 %>% as.partab
 #' @return object of class partab, data.frame
 #' @export
-
-
 as.partab.modelname <- function(
   x,
-  verbose=TRUE,
+  verbose=FALSE,
   lo='5',
   hi='95',
   project = if(is.null(opt)) getwd() else opt, 
   opt = getOption('project'),
-  rundir = file.path(project,x), 
-  metafile = file.path(rundir,paste0(x,'.meta')),
+  rundir = file.path(project,x),
+  metafile = file.path(rundir,paste0(x,'.def')),
   xmlfile = file.path(rundir,paste0(x,'.xml')),
   ctlfile = file.path(rundir,paste0(x,'.ctl')),
   bootcsv,
   strip.namespace=TRUE,
   skip=28,
   check.names=FALSE,  
-  digits = numeric(0),
-  ci = FALSE,
+  digits = 3,
+  ci = TRUE,
   open = '(',
   close = ')',
   sep = ', ',
-  format = ci,
+  format = TRUE,
   fields = c('symbol','label','unit'),
-  relative = FALSE,
+  relative = TRUE,
   percent=relative,
-  quote = FALSE,
-  na = '.',
-  na.strings = na,
-  as.is = TRUE,
   nonzero = TRUE,
   ...
 ){
@@ -155,7 +145,7 @@ as.partab.modelname <- function(
   )
   if(!missing(bootcsv)) args <- c(args,list(bootcsv=bootcsv))
   args <- c(args,list(...))
-  z <- try(do.call(as.bootstrap,args))
+  z <- tryCatch(do.call(as.bootstrap,args),error = function(e) if (verbose) e)
   #z <- try(x %>% as.bootstrap(skip=skip,check.names=check.names,lo=lo,hi=hi,verbose=verbose,project=project,bootcsv=bootcsv,...))
   theta   <- y %>% val_name('theta',  'theta','estimate')
   thetase <- y %>% val_name('thetase','theta','se')
@@ -163,9 +153,9 @@ as.partab.modelname <- function(
   sigmase <- y %>% row_col('sigmase', 'sigma','se')
   omega   <- y %>% row_col('omega',   'omega','estimate')
   omegase <- y %>% row_col('omegase', 'omega','se')
-  theta %<>% left_join(thetase,by='par')
-  omega %<>% left_join(omegase,by=c('par','offdiag'))
-  sigma %<>% left_join(sigmase,by=c('par','offdiag'))
+  theta %<>% left_join(thetase,by='parameter')
+  omega %<>% left_join(omegase,by=c('parameter','offdiag'))
+  sigma %<>% left_join(sigmase,by=c('parameter','offdiag'))
   theta %<>% mutate(offdiag = 0)
   param <- rbind(theta,omega,sigma)
   if(inherits(z,'data.frame')){
@@ -183,7 +173,7 @@ as.partab.modelname <- function(
             sep=':',
             param %>% 
               filter(offdiag==0) %$% 
-              par,
+              parameter,
             row.names(z)
           ),
           '\n'
@@ -199,7 +189,7 @@ as.partab.modelname <- function(
   }
   param %<>% select(-offdiag)
   if(nonzero){
-    param %<>% filter(!(estimate == 0 & par %contains% 'omega|sigma'))
+    param %<>% filter(!(estimate == 0 & parameter %contains% 'omega|sigma'))
   }
   if(relative){
     param %<>% mutate(se = se / estimate) # rename rse below
@@ -219,25 +209,25 @@ as.partab.modelname <- function(
     param %<>% mutate(lo = lo %>% as.character)
     param %<>% mutate(hi = hi %>% as.character)
   }
-  if(ci){
+  if(all(is.na(param$lo)) && all(is.na(param$hi))) param %<>% select(-lo,-hi)
+  if(ci && 'lo' %in% names(param)){
     param %<>% mutate(ci = paste(sep=sep, lo, hi) %>% enclose(open,close))
     param %<>% select(-lo, -hi)
   }
   if(relative && percent) param %<>% rename(prse = se)
   if(relative && !percent) param %<>% rename(rse = se)
-  # CREATE META
-  if(!file.exists(metafile)){
-    # SCAVENGE CTL
-    x %>%
-      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
-      as.paramComments(fields=fields,expected=param$par, na=na) %>%
-      write.csv(row.names=F,quote=quote, file=metafile, na=na, ...)
-    message('edit contents of ',metafile)
+  # internal metadata
+  m1 <- x %>%
+    as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
+    as.itemComments(fields=fields,expected=param$parameter) %>% 
+    rename(parameter = item)
+  param %<>% left_join(m1,by='parameter')
+  if(file.exists(metafile)){
+    if(verbose)message('merging ',metafile)
+    # SCAVENGE META
+    m2 <- as.csv(metafile,...) %>% rename(parameter = item)
+    param %<>% left_join(m2,by='parameter')
   }
-  if(verbose)message('merging ',metafile)
-  # SCAVENGE META
-  meta <- read.csv(na.strings=na.strings, as.is=as.is,metafile)
-  param %<>% left_join(meta,by='par')
   class(param) <- union('partab', class(param))
   param
 }

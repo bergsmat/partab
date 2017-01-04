@@ -49,7 +49,7 @@ function(x,...)unclass(x)
 #' @param pattern pattern to identify record declarations
 #' @param head subpattern to identify declaration type
 #' @param tail subpattern remaining
-#' @param parse whether to convert thetas to initList objects
+#' @param parse whether to convert thetas omegas and sigmas to initList and tables to itemList
 #' @return list
 #' @describeIn as.nmctl character method
 #' @export
@@ -66,7 +66,7 @@ function(
     class(x) <- if(file.exists(x)) 'filename' else 'modelname'
       return(as.nmctl(x,...))
   }
-	flag <- contains(pattern,x)
+	flag <- grepl(pattern,x)
 	nms <- sub(pattern,head,x)
 	nms <- nms[flag]
 	nms <- tolower(nms)
@@ -79,9 +79,11 @@ function(
 	thetas <- names(content)=='theta'
 	omegas <- names(content)=='omega'
 	sigmas <- names(content)=='sigma'
+	tables <- names(content)=='table'
 	if(parse)content[thetas] <- lapply(content[thetas],as.initList)
 	if(parse)content[omegas] <- lapply(content[omegas],as.initList)
 	if(parse)content[sigmas] <- lapply(content[sigmas],as.initList)
+	if(parse)content[tables] <- lapply(content[tables],as.itemList)
 	content
 }
 
@@ -250,60 +252,61 @@ as.nmctlType.nmctl <- function(x,type,...){
   y
 }
 
-#' Coerce to paramComments
+#' Coerce to itemComments
 #' 
-#' Coerces to paramComments
+#' Coerces to itemComments
 #' 
 #' @param x object of dispatch
 #' @param ... dots
 #' @export
 #' @keywords internal
-as.paramComments <- function(x,...)UseMethod('as.paramComments')
+as.itemComments <- function(x,...)UseMethod('as.itemComments')
 
-#' Convert nmctlType to paramComments
+#' Convert nmctlType to itemComments
 #' 
-#' Converts nmctlType to paramComments
+#' Converts nmctlType to itemComments
 #' 
-#' @inheritParams as.paramComments
+#' @inheritParams as.itemComments
 #' @return data.frame
-#' @describeIn as.paramComments nmctlType method
+#' @describeIn as.itemComments nmctlType method
 #' @export
 #' 
-as.paramComments.nmctlType <- function(x,...){
+as.itemComments.nmctlType <- function(x,...){
   type <- attr(x,'type')
   y <- list()
   prior <- 0
   for(i in seq_along(x)){
     this <- x[[i]]
-    y[[i]] <- as.paramComments(this,type=type, prior=prior)
+    y[[i]] <- as.itemComments(this,type=type, prior=prior)
     prior <- prior + ord(this)
   }
   y <- do.call(rbind,y)
-  class(y) <- union('paramComments',class(y))
+  class(y) <- union('itemComments',class(y))
   y
 }
 
-#' Convert nmctl to paramComments
+#' Convert nmctl to itemComments
 #' 
-#' Converts nmctl to paramComments
+#' Converts nmctl to itemComments
 #' 
-#' @inheritParams as.paramComments
+#' @inheritParams as.itemComments
 #' @param fields data items to scavenge from control stream comments
 #' @param expected parameters known from NONMEM output
 #' @param na string to use for NA values when writing default metafile
 #' @return data.frame
-#' @describeIn as.paramComments nmctl method
+#' @describeIn as.itemComments nmctl method
 #' @export
 #' 
-as.paramComments.nmctl <- function(x,fields,expected,na, ...){
-  t <- x %>% as.nmctlType('theta') %>% as.paramComments
-  o <- x %>% as.nmctlType('omega') %>% as.paramComments
-  s <- x %>% as.nmctlType('sigma') %>% as.paramComments
-  y <- rbind(t,o,s)
-  y <- cbind(y[,'par',drop=F], .renderComments(
+as.itemComments.nmctl <- function(x,fields=c('symbol','unit','label'),expected=character(0),na=NA_character_, ...){
+  t <- x %>% as.nmctlType('theta') %>% as.itemComments
+  o <- x %>% as.nmctlType('omega') %>% as.itemComments
+  s <- x %>% as.nmctlType('sigma') %>% as.itemComments
+  b <- x %>% as.nmctlType('table') %>% as.itemComments
+  y <- rbind(t,o,s,b)
+  y <- cbind(y[,'item',drop=F], .renderComments(
     y$comment,fields=fields, na=na, ...))
-  y <- data.frame(stringsAsFactors=F,par=expected) %>% left_join(y)
-  class(y) <- union('paramComments',class(y))
+  if(length(expected)) y <- data.frame(stringsAsFactors=F,item=expected) %>% left_join(y,by='item')
+  class(y) <- union('itemComments',class(y))
   y
 }
 
@@ -319,20 +322,86 @@ as.paramComments.nmctl <- function(x,fields,expected,na, ...){
   .renderComments(x=rem,fields=fields[-1],cumulative=cum, na=na)
 }
 
+#' Convert to itemList
+#' 
+#' Converts to itemList.
+#' 
+#' @param x object
+#' @param ... passed arguments
+#' @export
+as.itemList <- function(x,...)UseMethod('as.itemList')
 
-#' Convert initList to paramComments
+#' Convert to itemList from Character
 #' 
-#' Converts initList to paramComments
+#' Converts to itemlist from character
+#' @inheritParams as.itemList
+#' @return itemList
+#' @export
+as.itemList.character <- function(x,...){
+  # for nonmem table items.  'BY' not supported
+  x <- sub('FILE *= *[^ ]+','',x) # filename must not contain space
+  reserved  <- c(
+    'NOPRINT','PRINT','NOHEADER','ONEHEADER',
+    'FIRSTONLY','NOFORWARD','FORWARD',
+    'NOAPPEND','APPEND',
+    'UNCONDITIONAL','CONDITIONAL','OMITTED'
+  )
+  for(i in reserved) x <- sub(i,'',x) # remove reserved words
+  x <- gsub(' +',' ',x) # remove double spaces
+  x %<>% sub('^ *','',.) # rm leading spaces
+  x %<>% sub(' *$','',.) # rm trailing spaces
+  x <- x[!grepl('^;',x)] # rm pure comments
+  x <- x[x!=''] # remove blank lines
+  # each line is now a set of items followed by an optional comment that applies to the last item
+  sets <- sub(' *;.*','',x) # rm first semicolon, any preceding spaces, and all following
+  comment <- sub('^[^;]*;','',x) # select only material following the first semicolon
+  comment[comment == x] <- '' # if pattern not found
+  stopifnot(length(sets) == length(comment))
+  sets <- strsplit(sets,c(' ',','))
+  sets <- lapply(sets,as.list)
+  for(i in 1:length(sets)){
+    com <- comment[[i]]
+    len <- length(sets[[i]])
+    attr(sets[[i]][[len]],'comment') <- com
+  }
+  sets <- do.call(c,sets)
+  class(sets) <- c('itemList','list')
+  sets
+}
+
+#' Convert itemList to itemComments
 #' 
-#' @inheritParams as.paramComments
-#' @param type parameter type: theta, omega,or sigma
-#' @param prior number of prior parameters of this type (imporant for numbering)
+#' Converts itemList to itemComments
+#' 
+#' @inheritParams as.itemComments
+#' @param type item type: table
 #' @return data.frame
-#' @describeIn as.paramComments initList method
+#' @describeIn as.itemComments initList method
 #' @export
 #' 
 
-as.paramComments.initList <- function(x, type, prior,...){
+as.itemComments.itemList <- function(x, type, prior, ...){
+  item <- sapply(x,as.character)
+  comment <- sapply(x,function(i)attr(i,'comment'))
+  dex <- cbind(item,comment)
+  class(dex) <- union('itemComments',class(dex))
+  dex
+}
+
+
+#' Convert initList to itemComments
+#' 
+#' Converts initList to itemComments
+#' 
+#' @inheritParams as.itemComments
+#' @param type item type: theta, omega, sigma, or table
+#' @param prior number of prior items of this type (maybe imporant for numbering)
+#' @return data.frame
+#' @describeIn as.itemComments initList method
+#' @export
+#' 
+
+as.itemComments.initList <- function(x, type, prior,...){
   block <- attr(x,'block')
   com <- lapply(x,function(i)attr(i,'comment'))
   com <- sapply(com, function(i){ # ensure single string
@@ -347,12 +416,12 @@ as.paramComments.initList <- function(x, type, prior,...){
   )
   dex$row <- padded(dex$row + prior,2)
   dex$col <- padded(dex$col + prior,2)
-  dex$par <- type
-  dex$par <- paste(sep='_',dex$par,dex$row)
-  if(type %in% c('omega','sigma'))dex$par <- paste(sep='_', dex$par, dex$col)
+  dex$item <- type
+  dex$item <- paste(sep='_',dex$item,dex$row)
+  if(type %in% c('omega','sigma'))dex$item <- paste(sep='_', dex$item, dex$col)
   dex %<>% rename(comment = x)
-  dex %<>% select(par,comment)
-  class(dex) <- union('paramComments',class(dex))
+  dex %<>% select(item,comment)
+  class(dex) <- union('itemComments',class(dex))
   dex
 }
 
@@ -374,6 +443,19 @@ ord.initList <- function(x,...){
   if(block == 0) return(len)
   return(block)
 }
+
+#' Identify the order of an itemList
+#' 
+#' Identifies the order of an itemList.
+#' 
+#' Essentially the length of the list
+#' @param x itemList
+#' @param ... dots
+#' @return numeric
+#' @export
+#' @keywords internal
+
+ord.itemList <- function(x,...)length(x)
 
 
 
