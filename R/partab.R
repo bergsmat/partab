@@ -211,8 +211,10 @@ as.partab.modelname <- function(
   }
   if(all(is.na(param$lo)) && all(is.na(param$hi))) param %<>% select(-lo,-hi)
   if(ci && 'lo' %in% names(param)){
+    blank <- is.na(param$lo) & is.na(param$hi)
     param %<>% mutate(ci = paste(sep=sep, lo, hi) %>% enclose(open,close))
     param %<>% select(-lo, -hi)
+    param$ci[blank] <- ''
   }
   if(relative && percent) param %<>% rename(prse = se)
   if(relative && !percent) param %<>% rename(rse = se)
@@ -226,6 +228,22 @@ as.partab.modelname <- function(
     if(verbose)message('merging ',metafile)
     # SCAVENGE META
     m2 <- as.csv(metafile,...) %>% rename(parameter = item)
+    new <- names(m2)
+    have <- names(param)
+    dups <- intersect(have,new)
+    dups <- setdiff(dups,'parameter')
+    if(length(dups)){
+      if(verbose)warning(
+        'ignoring ',
+        paste(dups,collapse=', '), 
+        ' found in ',
+        metafile,
+        ' but likely defined as well in ',
+        ctlfile
+      )
+      for(i in dups)m2[[i]] <- NULL
+    }
+    
     param %<>% left_join(m2,by='parameter')
   }
   class(param) <- union('partab', class(param))

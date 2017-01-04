@@ -139,15 +139,46 @@ as.flextable.data.frame <- function(x,...){
 #' 
 #' Coerces partab to flextable.
 #' 
-#' At present, just calls the data.frame method.
+#' Calls the data.frame method and adds remaining arguments. Pass zero-length values (e.g. NULL) to suppress.
 #' @inheritParams as.flextable
+#' @param body.par.props passed to FlexTable
+#' @param header.par.props passed to FlexTable
+#' @param inner.vertical passed to setFlexTableBorders
+#' @param inner.horizontal passed to setFlexTableBorders
+#' @param outer.vertical passed to setFlexTableBorders
+#' @param outer.horizontal passed to setFlexTableBorders
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{addFlexTable}}
 #' @seealso \code{\link[ReporteRs]{FlexTable}}
 #' @return flextable
 #' @describeIn as.flextable partab method
 #' @export
-as.flextable.partab <- function(x,...)as.flextable.data.frame(x,...)
+as.flextable.partab <- function(
+  x,
+  body.par.props = parProperties(padding = 5),
+  header.par.props = parProperties(padding = 5),
+  inner.vertical = borderProperties( style = "none" ), 
+  inner.horizontal = borderProperties( width = 1 ), 
+  outer.vertical = borderProperties( width = 0 ), 
+  outer.horizontal = borderProperties( width = 2 ),
+  footer = TRUE,
+  ...
+){
+  y <- as.flextable.data.frame(
+    x,
+    body.par.props = body.par.props,
+    header.par.props = header.par.props,
+    ...
+  )
+  y %<>% setFlexTableBorders(
+    inner.vertical = inner.vertical,
+    inner.horizontal = inner.horizontal,
+    outer.vertical = outer.vertical,
+    outer.horizontal = outer.horizontal,
+    footer=footer
+  )
+  y
+}
 
 #' Coerce to file
 #' 
