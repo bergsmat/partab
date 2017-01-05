@@ -49,35 +49,13 @@ as.definitions.character <- function(x,...){
 #' @import dplyr
 #' @param x a model name (numeric or character)
 #' @param verbose set FALSE to suppress messages
-#' @param lo the PsN bootstrap lower confidence limit (\%)
-#' @param hi the PsN bootstrap upper confidence limit (\%)
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory
-#' @param metafile metadata for item definitions; will be created if missing (edit and re-run)
-#' @param xmlfile path to xml file
 #' @param ctlfile path to control stream
-#' @param bootcsv path to PsN bootstrap_results.csv
-#' @param strip.namespace whether to strip e.g. nm: from xml elements for easier xpath syntax
-#' @param skip number of lines to skip in bootstrap_results.csv
-#' @param check.names passed to bootstrap reader
-#' @param digits limits numerics to significant digits if specified
-#' @param ci combine bootstrap lo and hi into an enclosed interval
-#' @param sep separator for bootstrap interval
-#' @param open first character for bootstrap interval
-#' @param close last character for bootstrap interval
-#' @param format format numerics as character
 #' @param fields metadata fields to read from control stream if no metafile
-#' @param relative transform standard errors to relative standard errors: rse replaces se
-#' @param percent if relative is true, express as percent (else ignore): prse replaces se
-#' @param quote quote csv values when creating template metafile
-#' @param na how to encode NA in metafile
-#' @param na.strings what to read as NA in metafile 
-#' @param as.is passed to read.csv for reading metafile
-#' @param nonzero limit random effects to those with nonzero estimates
+#' @param unique drop duplicate definitions
 #' @param ... passed to other functions
-#' @seealso \code{\link{as.docx.definitions}}
-#' @seealso \code{\link{as.flextable.definitions}}
 #' @seealso \code{\link{as.xml_document.modelname}}
 #' @seealso \code{\link{as.bootstrap.modelname}}
 #' @seealso \code{\link{as.nmctl.modelname}}

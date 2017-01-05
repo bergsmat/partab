@@ -15,6 +15,7 @@ Imports:
 Suggests:
     ReporteRs,
     knitr,
-    rmarkdown
+    rmarkdown,
+    pander
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

@@ -64,7 +64,7 @@ as.bootstrap.character <- function(x,...){
 as.bootstrap.filepath <- function(x,skip=28,check.names=FALSE,lo='5',hi='95',verbose=TRUE,...){
   if(verbose) message('reading ',x)
   x <- x %>% 
-    read.csv(skip=skip,check.names=check.names,as.is=TRUE,...)
+    utils::read.csv(skip=skip,check.names=check.names,as.is=TRUE,...)
   y <- x
   x <- x[c(1:8),] 
   row.names(x) <- text2decimal(x[,1])

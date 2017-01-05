@@ -76,28 +76,10 @@ as.docx.partab <- function(
     empty_template = empty_template,
     list.definition = list.definition
   )
-  doc %<>% ReporteRs::addFlexTable(as.flextable.data.frame(x,...),...)
+  tab <- as.flextable(x,...)
+  doc %<>% ReporteRs::addFlexTable(tab,...)
+  doc
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #' Coerce to flextable
 #' 
@@ -147,6 +129,7 @@ as.flextable.data.frame <- function(x,...){
 #' @param inner.horizontal passed to setFlexTableBorders
 #' @param outer.vertical passed to setFlexTableBorders
 #' @param outer.horizontal passed to setFlexTableBorders
+#' @param footer passed to setFlexTableBorders
 #' @seealso \code{\link[ReporteRs]{docx}}
 #' @seealso \code{\link[ReporteRs]{addFlexTable}}
 #' @seealso \code{\link[ReporteRs]{FlexTable}}
@@ -164,7 +147,8 @@ as.flextable.partab <- function(
   footer = TRUE,
   ...
 ){
-  y <- as.flextable.data.frame(
+  requireNamespace('ReporteRs')
+    y <- as.flextable.data.frame(
     x,
     body.par.props = body.par.props,
     header.par.props = header.par.props,
@@ -200,5 +184,5 @@ as.file <- function(x,...)UseMethod('as.file')
 as.file.docx <- function(x,file,...){
   requireNamespace('ReporteRs')
   ReporteRs::writeDoc(doc=x,file=file,...)
-  x
+  invisible(x)
 }

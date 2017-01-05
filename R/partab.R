@@ -78,6 +78,7 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param hi the PsN bootstrap upper confidence limit (\%)
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
+#' @param ctlmeta whether to look for parameter metadata in the control stream
 #' @param rundir specific model directory
 #' @param metafile optional metadata for parameter table (see also: fields)
 #' @param xmlfile path to xml file
@@ -86,7 +87,7 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param strip.namespace whether to strip e.g. nm: from xml elements for easier xpath syntax
 #' @param skip number of lines to skip in bootstrap_results.csv
 #' @param check.names passed to bootstrap reader
-#' @param digits limits numerics to significant digits if specified
+#' @param digits limits numerics to significant digits (use NULL to suppress)
 #' @param ci combine bootstrap lo and hi into an enclosed interval
 #' @param sep separator for bootstrap interval
 #' @param open first character for bootstrap interval
@@ -120,6 +121,7 @@ as.partab.modelname <- function(
   project = if(is.null(opt)) getwd() else opt, 
   opt = getOption('project'),
   rundir = file.path(project,x),
+  ctlmeta = TRUE,
   metafile = file.path(rundir,paste0(x,'.def')),
   xmlfile = file.path(rundir,paste0(x,'.xml')),
   ctlfile = file.path(rundir,paste0(x,'.ctl')),
@@ -223,11 +225,13 @@ as.partab.modelname <- function(
   if(relative && percent) param %<>% rename(prse = se)
   if(relative && !percent) param %<>% rename(rse = se)
   # internal metadata
-  m1 <- x %>%
-    as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
-    as.itemComments(fields=fields,expected=param$parameter) %>% 
-    rename(parameter = item)
-  param %<>% left_join(m1,by='parameter')
+  if(ctlmeta){
+    m1 <- x %>%
+      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
+      as.itemComments(fields=fields,expected=param$parameter) %>% 
+      rename(parameter = item)
+    param %<>% left_join(m1,by='parameter')
+  }
   if(file.exists(metafile)){
     if(verbose)message('merging ',metafile)
     # SCAVENGE META
