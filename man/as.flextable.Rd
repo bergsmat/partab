@@ -10,12 +10,14 @@ as.flextable(x, ...)
 
 \method{as.flextable}{data.frame}(x, ...)
 
-\method{as.flextable}{partab}(x, body.par.props = parProperties(padding = 5),
-  header.par.props = parProperties(padding = 5),
-  inner.vertical = borderProperties(style = "none"),
-  inner.horizontal = borderProperties(width = 1),
-  outer.vertical = borderProperties(width = 0),
-  outer.horizontal = borderProperties(width = 2), footer = TRUE, ...)
+\method{as.flextable}{partab}(x,
+  body.par.props = ReporteRs::parProperties(padding = 5),
+  header.par.props = ReporteRs::parProperties(padding = 5),
+  inner.vertical = ReporteRs::borderProperties(style = "none"),
+  inner.horizontal = ReporteRs::borderProperties(width = 1),
+  outer.vertical = ReporteRs::borderProperties(width = 0),
+  outer.horizontal = ReporteRs::borderProperties(width = 2), footer = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{object}
@@ -33,6 +35,8 @@ as.flextable(x, ...)
 \item{outer.vertical}{passed to setFlexTableBorders}
 
 \item{outer.horizontal}{passed to setFlexTableBorders}
+
+\item{footer}{passed to setFlexTableBorders}
 }
 \value{
 flextable

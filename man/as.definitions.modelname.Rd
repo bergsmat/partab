@@ -25,49 +25,9 @@
 
 \item{fields}{metadata fields to read from control stream if no metafile}
 
+\item{unique}{drop duplicate definitions}
+
 \item{...}{passed to other functions}
-
-\item{lo}{the PsN bootstrap lower confidence limit (\%)}
-
-\item{hi}{the PsN bootstrap upper confidence limit (\%)}
-
-\item{metafile}{metadata for item definitions; will be created if missing (edit and re-run)}
-
-\item{xmlfile}{path to xml file}
-
-\item{bootcsv}{path to PsN bootstrap_results.csv}
-
-\item{strip.namespace}{whether to strip e.g. nm: from xml elements for easier xpath syntax}
-
-\item{skip}{number of lines to skip in bootstrap_results.csv}
-
-\item{check.names}{passed to bootstrap reader}
-
-\item{digits}{limits numerics to significant digits if specified}
-
-\item{ci}{combine bootstrap lo and hi into an enclosed interval}
-
-\item{sep}{separator for bootstrap interval}
-
-\item{open}{first character for bootstrap interval}
-
-\item{close}{last character for bootstrap interval}
-
-\item{format}{format numerics as character}
-
-\item{relative}{transform standard errors to relative standard errors: rse replaces se}
-
-\item{percent}{if relative is true, express as percent (else ignore): prse replaces se}
-
-\item{quote}{quote csv values when creating template metafile}
-
-\item{na}{how to encode NA in metafile}
-
-\item{na.strings}{what to read as NA in metafile}
-
-\item{as.is}{passed to read.csv for reading metafile}
-
-\item{nonzero}{limit random effects to those with nonzero estimates}
 }
 \value{
 object of class definitions, data.frame
@@ -85,10 +45,6 @@ options(project = system.file('project/model',package='partab'))
 1001 \%>\% as.definitions
 }
 \seealso{
-\code{\link{as.docx.definitions}}
-
-\code{\link{as.flextable.definitions}}
-
 \code{\link{as.xml_document.modelname}}
 
 \code{\link{as.bootstrap.modelname}}

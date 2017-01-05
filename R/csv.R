@@ -20,7 +20,7 @@ as.csv <- function(x,...)UseMethod('as.csv')
 as.csv.character <- function(x,as.is=TRUE,na.strings=c('',' ','.'),strip.white=T,...){
   stopifnot(length(x)==1)
   stopifnot(file.exists(x))
-  y <- read.csv(x,as.is=as.is,na.strings=na.strings,strip.white=strip.white,...)
+  y <- utils::read.csv(x,as.is=as.is,na.strings=na.strings,strip.white=strip.white,...)
   y
 }
 
@@ -47,7 +47,7 @@ as.csv.data.frame <- function(x, file, na='.',quote=FALSE,row.names=FALSE,...){
     'found duplicate(s) e.g.:\n',
     dup[1,] %>% t %>% paste(collapse=', ')
   )
-  write.csv(x,file=file,na=na,quote=quote,row.names=row.names,...)
+  utils::write.csv(x,file=file,na=na,quote=quote,row.names=row.names,...)
   invisible(x)
 }
 
