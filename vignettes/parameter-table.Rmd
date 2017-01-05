@@ -9,6 +9,157 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+The impact of a great model depends a lot on how well it is communicated.  A parameter table can help; it brings together critical details of the model in a systematic way.  However, creating parameter tables can be tedious, especially for modeling systems like `NONMEM` where information is distributed among numerous text files.  Here we describe a systematic approach for generating parameter tables in `NONMEM`.
+
+## Sources
+NONMEM results end up in many places.
+ 
+ * The `list` file has the final parameter estimates in a readable form, as well as many diagnostic values, such as standard errors (when available) and shrinkage estimates.
+
+ * Various ancillary outputs may be available, such as `*.ext`, `*.cov`, `*.xml`, etc, giving more regular and/or more specific versions of model components.
+
+ * Bootstrap estimates of parameter uncertainty are probably in some third-party format, since bootstrapping is usually performed independently of model estimation.
+ 
+Some of the most important information may not be captured anywhere! You may know that THETA1 is "apparent oral clearance" in your model, and that the units are liters.  But to NONMEM it is just THETA1.
+
+When you are making parameter tables by hand, no problem:  your memory supplies all the integration, as well as missing details.  But manual table generation can be tedious, time-consuming, and error-prone.  If, rather, we want to automate the generation of parameter tables, we're going to have to be more systematic about where and how the data sources are stored.
+
+## Conventions
+The most fundamental storage convention is the concept of a `project`.  This is a path -- preferably a *relative* path, to a directory where your models live.
+
+A second useful convention is the habit of keeping all the files related to a specific model in a `project` subdirectory with a unique name: i.e., the name of the model.  While not strictly necessary, it really helps with organization and keeps NONMEM models from interfering with eachother while running.
+
+I mentioned relative paths above.  Relative to what?  A third useful convention is to write all file paths relative to the file in which you are writing them.  So if I have a model in `home/project/1001/`, and I write a script `home/script/analysis.R` that processes model ouptut, the path to the model directory will be written as `../project/1001`.
+
+## Challenges
+Okay, cut to the chase:  we want an R function that creates a NONMEM parameter table.  The challenges to be solved are as follows.
+
+ * Where can we find the model output?
+ * What form of the results is required?
+ * Where will the bootstrap values come from?
+ * What is the interpretation of the estimates?
+ 
+## Solution
+The `partab` package (see Installation section below) provides a function `as.partab` that creates a parameter table for a single NONMEM model.  `as.partab` knows where the models live, because you explicitly pass a `project` argument or (if you are lazy like me) you set an option near the top of your script.  So you could do this:
+
+```{r eval=FALSE}
+as.partab(1001, project='../model')
+```
+Or this:
+```{r eval=FALSE}
+options(project = '../model')
+as.partab(1001)
+```
+## A Word about Object Orientation
+Users should not have to worry much about object orientation, but knowing something about it can be very helpful.
+
+Briefly, object orientation means that a function does different things to different object types.  Preparing a meal is very different from preparing a tax return.  And formatting a `data.frame` is very different from formatting a `POSIXlt`.  Try 
+```{r eval=FALSE}
+methods(format)
+```
+to see all ways things get formatted in R.  Typically we just say `format` and R finds the right method, depending on what it is we are formatting.
+
+`as.partab` is no different.  If you say `as.partab(1001)`, the software sees that you are trying to create a parameter table from a number, which doesn't really make sense.  So it assumes 1001 is a model name, converts it to character, and goes looking for the function `as.partab.modelname()`.  In fact, most of the interesting arguments to `as.partab` are actually documented under `as.partab.modelname` for this reason.
+
+## A Word about Piping
+You've probably noticed ... R usage is undergoing a revolution. The `magrittr` package recently gave us a "forward pipe operator" that fundamentally changes how R can be used. Even if you don't use piping, an awareness will help you understand the occasional example.  For instance, the following have the same meaning.
+
+Traditional:
+```{r eval=FALSE}
+as.partab(1001)
+```
+... and Piped:
+```{r eval=FALSE}
+1001 %>% as.partab
+```
+Essentially, the left-hand-side is the first argument to the function on the right-hand-side, and the result can be used as input to yet-another-function in an ongoing chain.  That means we can express functionality in a natural order, rather than reverse-nested order. This:
+```{r eval=FALSE}
+2 %>% sqrt %>% signif(3)
+```
+is easier to write and easier to understand (in my opinion) than this:
+```{r eval=FALSE}
+signif(sqrt(2),digits=3)
+```
+but the two are equivalent.
+
+## Finding Estimates
+`as.partab` gets estimates and standard errors from `*.xml`.  Make sure your NONMEM execution procedure calls for this file to be created and returned.  It should appear in the model directory as a sibling of `*.lst`.  If your xml file is in an unusual place, you can specify the path explicitly using the `xmlfile` argument (othewise `as.partab` will guess). 
+```{r eval=FALSE}
+as.partab(1001, xmlfile='..model/1001.xml')
+```
+
+## Finding Bootstraps
+`as.partab` gets bootstrap estimates from  `bootstrap_dirx/bootstrap_results.csv` (in the model directory).  This is created using PsN.  `as.partab` will try to find the latest file if there are more than one attempts.  You can specify the path explicitly using the `bootcsv` argument.
+```{r eval=FALSE}
+as.partab(1001, bootcsv='..model/1001/bootstrap_results.csv')
+```
+
+
+## Finding Metadata
+Let's face it.  NONMEM does not have integrated metadata.  It knows the final estimate of THETA1, but it does not know what THETA1 means in human terms.  A really useful parameter table should give a symbolic interpretation of THETA1, such as CL/F, units (if any), and hopefully a short definition.
+
+The bad news is: you have to supply these yourself.  The good new is: if you do it systematically, you can save a lot of effort.
+
+`as.partab` looks in two places for metadata.  First, it looks in the control stream for the items mentioned in the `fields` argument.  It will guess where the control stream is, but you can supply the `ctlfile` argument.  You can also modify the fields argument to change what it seeks.
+```{r eval=FALSE}
+as.partab(1001, ctlfile = '../models/1001.ctl',fields = 'definition').
+```
+`as.partab` hopes to find each parameter on a line by itself, with semicolon-delimited fields trailing on the same line.  
+
+```
+$THETA 
+(0,10,50)     ; CL/F; clearance;       L/h
+(0,10,100)    ; Vc/F; central volume;  L
+(0,0.2,5)     ; Ka;   absorption rate; 1/h
+```
+By the way, the same conventions apply to tabled items. You can specify in your control stream how you think about table output.  
+```
+$TABLE NOPRINT FILE=mod2.tab ONEHEADER 
+ID            ; ID;    subject identifier;
+TIME          ; TIME;  time;                       h
+IPRE          ; IPRED; individual prediction;ng/mL
+CL            ; CLI;   posthoc systemic clearance; L/h
+ETA1          ; BSV_CL; clearance variability;
+```
+Of course, these won't show up in a parameter table, but you'll see them in a list of item definitions if you do this (be sure you have set ```options(project=)```):
+```{r, echo=FALSE, results='hide'}
+options(project='../inst/project')
+```
+```{r}
+library(magrittr)
+library(partab)
+1001 %>% as.definitions %>% head
+```
+
+## Customizing Your Parameter Table
+raw, adding calculations etc
+
+## Rendering Your Parameter Table
+
+## Related Utilities
+
+## Installation
+and finding this vignette
+
+## Getting Help
+
+## Conclusion
+
+
+
+library(dplyr)
+library(tidyr)
+library(magrittr)
+library(xml2)
+options(project = 'inst/project/model')
+1001 %>% as.definitions %>% as.csv('inst/project/model/1001/1001.def')
+1001 %>% as.partab(verbose=T)
+1001 %>% as.partab
+1001 %>% as.partab %>% as.flextable
+
+
+
+ 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
 - Never uses retina figures

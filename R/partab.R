@@ -67,6 +67,9 @@ row_col <- function(x, xpath, param, moment,...){
 #' the project option.  
 #' 
 #' Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
+#' 
+#' Metadata can be added to the parameter table two ways: as markup in the control stream, and as a *.def file in the model directory.  See vignette('parameter-table') for details.
+#' 
 #' @import magrittr
 #' @import dplyr
 #' @param x a model name (numeric or character)
@@ -76,7 +79,7 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory
-#' @param metafile metadata for parameter table; will be created if missing (edit and re-run)
+#' @param metafile optional metadata for parameter table (see also: fields)
 #' @param xmlfile path to xml file
 #' @param ctlfile path to control stream
 #' @param bootcsv path to PsN bootstrap_results.csv
@@ -89,7 +92,7 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param open first character for bootstrap interval
 #' @param close last character for bootstrap interval
 #' @param format format numerics as character
-#' @param fields metadata fields to read from control stream if no metafile
+#' @param fields metadata fields to read from control stream.  See details.
 #' @param relative transform standard errors to relative standard errors: rse replaces se
 #' @param percent if relative is true, express as percent (else ignore): prse replaces se
 #' @param nonzero limit random effects to those with nonzero estimates
@@ -101,6 +104,7 @@ row_col <- function(x, xpath, param, moment,...){
 #' @seealso \code{\link{as.nmctl.modelname}}
 #' @seealso \code{\link{write.csv}}
 #' @seealso \code{\link{read.csv}}
+#' @seealso \code{\link{as.csv}}
 #' @aliases partab
 #' @examples
 #' library(magrittr)

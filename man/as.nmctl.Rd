@@ -30,7 +30,7 @@ as.nmctl(x, ...)
 
 \item{tail}{subpattern remaining}
 
-\item{parse}{whether to convert thetas to initList objects}
+\item{parse}{whether to convert thetas omegas and sigmas to initList and tables to itemList}
 
 \item{verbose}{whether to display messages}
 

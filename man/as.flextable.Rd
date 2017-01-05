@@ -10,12 +10,29 @@ as.flextable(x, ...)
 
 \method{as.flextable}{data.frame}(x, ...)
 
-\method{as.flextable}{partab}(x, ...)
+\method{as.flextable}{partab}(x, body.par.props = parProperties(padding = 5),
+  header.par.props = parProperties(padding = 5),
+  inner.vertical = borderProperties(style = "none"),
+  inner.horizontal = borderProperties(width = 1),
+  outer.vertical = borderProperties(width = 0),
+  outer.horizontal = borderProperties(width = 2), footer = TRUE, ...)
 }
 \arguments{
 \item{x}{object}
 
 \item{...}{passed to methods}
+
+\item{body.par.props}{passed to FlexTable}
+
+\item{header.par.props}{passed to FlexTable}
+
+\item{inner.vertical}{passed to setFlexTableBorders}
+
+\item{inner.horizontal}{passed to setFlexTableBorders}
+
+\item{outer.vertical}{passed to setFlexTableBorders}
+
+\item{outer.horizontal}{passed to setFlexTableBorders}
 }
 \value{
 flextable
@@ -30,7 +47,7 @@ Coerces data.frame to flextable
 Coerces partab to flextable.
 }
 \details{
-At present, just calls the data.frame method.
+Calls the data.frame method and adds remaining arguments. Pass zero-length values (e.g. NULL) to suppress.
 }
 \section{Methods (by class)}{
 \itemize{

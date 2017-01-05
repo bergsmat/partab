@@ -5,16 +5,15 @@
 \alias{partab}
 \title{Create a Parameter Table from Model Name}
 \usage{
-\method{as.partab}{modelname}(x, verbose = TRUE, lo = "5", hi = "95",
+\method{as.partab}{modelname}(x, verbose = FALSE, lo = "5", hi = "95",
   project = if (is.null(opt)) getwd() else opt, opt = getOption("project"),
   rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
-  ".par")), xmlfile = file.path(rundir, paste0(x, ".xml")),
+  ".def")), xmlfile = file.path(rundir, paste0(x, ".xml")),
   ctlfile = file.path(rundir, paste0(x, ".ctl")), bootcsv,
-  strip.namespace = TRUE, skip = 28, check.names = FALSE,
-  digits = numeric(0), ci = FALSE, open = "(", close = ")",
-  sep = ", ", format = ci, fields = c("symbol", "label", "unit"),
-  relative = FALSE, percent = relative, quote = FALSE, na = ".",
-  na.strings = na, as.is = TRUE, nonzero = TRUE, ...)
+  strip.namespace = TRUE, skip = 28, check.names = FALSE, digits = 3,
+  ci = TRUE, open = "(", close = ")", sep = ", ", format = TRUE,
+  fields = c("symbol", "label", "unit"), relative = TRUE,
+  percent = relative, nonzero = TRUE, ...)
 }
 \arguments{
 \item{x}{a model name (numeric or character)}
@@ -31,7 +30,7 @@
 
 \item{rundir}{specific model directory}
 
-\item{metafile}{metadata for parameter table; will be created if missing (edit and re-run)}
+\item{metafile}{optional metadata for parameter table (see also: fields)}
 
 \item{xmlfile}{path to xml file}
 
@@ -57,19 +56,11 @@
 
 \item{format}{format numerics as character}
 
-\item{fields}{metadata fields to read from control stream if no metafile}
+\item{fields}{metadata fields to read from control stream.  See details.}
 
 \item{relative}{transform standard errors to relative standard errors: rse replaces se}
 
 \item{percent}{if relative is true, express as percent (else ignore): prse replaces se}
-
-\item{quote}{quote csv values when creating template metafile}
-
-\item{na}{how to encode NA in metafile}
-
-\item{na.strings}{what to read as NA in metafile}
-
-\item{as.is}{passed to read.csv for reading metafile}
 
 \item{nonzero}{limit random effects to those with nonzero estimates}
 
@@ -84,6 +75,8 @@ the project option.
 }
 \details{
 Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
+
+Metadata can be added to the parameter table two ways: as markup in the control stream, and as a *.def file in the model directory.  See vignette('parameter-table') for details.
 }
 \examples{
 library(magrittr)
@@ -104,5 +97,7 @@ options(project = system.file('project/model',package='partab'))
 \code{\link{write.csv}}
 
 \code{\link{read.csv}}
+
+\code{\link{as.csv}}
 }
 

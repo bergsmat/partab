@@ -3,7 +3,7 @@
 #' Reads or writes CSV files in a standard way.
 #' @param x object
 #' @param ... passed arguments
-#' @param export
+#' @export
 as.csv <- function(x,...)UseMethod('as.csv')
 
 #' Treat Character as CSV
