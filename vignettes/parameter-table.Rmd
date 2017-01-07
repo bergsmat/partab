@@ -140,10 +140,12 @@ options(project = system.file('project/model',package='partab'))
 1001 %>% as.definitions %>% head
 ```
 
-If you like, you can write these definitions to a suitable location, and alter them manually. Pass the location of this file using the `metafile` argument to have them included in the parameter table. (Or put it in the model directory as ```<model>.def``` and it will be found automatically.)  *NOTE* Anything that `as.partab` finds in the control stream will take precedent over identically-named items in `metafile`; pass ```ctlmeta = FALSE``` to ignore the control stream metadata.
+If you like, you can write out the defintions and edit them. You can change the file
+location or stick with the default. If you didn't like exactly what was in the control
+stream, you can ignore it by passing a zero-length argument for ctlfile.
 ```{r eval = FALSE}
-1001 %>% as.definitions %>% as.csv('1001.def')
-1001 %>% as.partab(metafile = '1001.def', ctlmeta = FALSE)
+1001 %>% as.definitions(write=T)
+1001 %>% as.partab(ctlfile = NULL)
 ```
 
 The metafile needs to stay comma-separated.  White space will be stripped, and blanks, spaces, or dots will be understood as NA.

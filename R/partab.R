@@ -78,7 +78,6 @@ row_col <- function(x, xpath, param, moment,...){
 #' @param hi the PsN bootstrap upper confidence limit (\%)
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
-#' @param ctlmeta whether to look for parameter metadata in the control stream
 #' @param rundir specific model directory
 #' @param metafile optional metadata for parameter table (see also: fields)
 #' @param xmlfile path to xml file
@@ -121,7 +120,6 @@ as.partab.modelname <- function(
   project = if(is.null(opt)) getwd() else opt, 
   opt = getOption('project'),
   rundir = file.path(project,x),
-  ctlmeta = TRUE,
   metafile = file.path(rundir,paste0(x,'.def')),
   xmlfile = file.path(rundir,paste0(x,'.xml')),
   ctlfile = file.path(rundir,paste0(x,'.ctl')),
@@ -224,36 +222,9 @@ as.partab.modelname <- function(
   }
   if(relative && percent) param %<>% rename(prse = se)
   if(relative && !percent) param %<>% rename(rse = se)
-  # internal metadata
-  if(ctlmeta){
-    m1 <- x %>%
-      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
-      as.itemComments(fields=fields,expected=param$parameter) %>% 
-      rename(parameter = item)
-    param %<>% left_join(m1,by='parameter')
-  }
-  if(file.exists(metafile)){
-    if(verbose)message('merging ',metafile)
-    # SCAVENGE META
-    m2 <- as.csv(metafile,...) %>% rename(parameter = item)
-    new <- names(m2)
-    have <- names(param)
-    dups <- intersect(have,new)
-    dups <- setdiff(dups,'parameter')
-    if(length(dups)){
-      if(verbose)warning(
-        'ignoring ',
-        paste(dups,collapse=', '), 
-        ' found in ',
-        metafile,
-        ' but likely defined as well in ',
-        ctlfile
-      )
-      for(i in dups)m2[[i]] <- NULL
-    }
-    
-    param %<>% left_join(m2,by='parameter')
-  }
+  meta <- as.definitions(x, ctlfile=ctlfile,metafile=metafile,...)
+  meta %<>% rename(parameter = item)
+  param %<>% left_join(meta,by='parameter')
   class(param) <- union('partab', class(param))
   param
 }

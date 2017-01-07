@@ -3,12 +3,14 @@
 \name{as.definitions.modelname}
 \alias{as.definitions.modelname}
 \alias{definitions}
-\title{Create a Item Definitions from Model Name}
+\title{Create Item Definitions from Model Name}
 \usage{
 \method{as.definitions}{modelname}(x, verbose = FALSE,
   opt = getOption("project"), project = if (is.null(opt)) getwd() else opt,
   rundir = file.path(project, x), ctlfile = file.path(rundir, paste0(x,
-  ".ctl")), fields = c("symbol", "label", "unit"), unique = TRUE, ...)
+  ".ctl")), metafile = file.path(rundir, paste0(x, ".def")),
+  fields = c("symbol", "label", "unit"), read = length(metafile) == 1,
+  write = FALSE, ...)
 }
 \arguments{
 \item{x}{a model name (numeric or character)}
@@ -21,23 +23,26 @@
 
 \item{rundir}{specific model directory}
 
-\item{ctlfile}{path to control stream}
+\item{ctlfile}{path to control stream (pass length-zero argument to ignore)}
+
+\item{metafile}{path to definitions file (pass length-zero argument to ignore)}
 
 \item{fields}{metadata fields to read from control stream if no metafile}
 
-\item{unique}{drop duplicate definitions}
+\item{read}{whether to read the definitions file}
+
+\item{write}{whether to write the definitions file}
 
 \item{...}{passed to other functions}
 }
 \value{
-object of class definitions, data.frame
+object of class definitions, or path to metafile if write = TRUE.
 }
 \description{
-Creates a item definitions from a model name. Pass the project argument or set 
-the project option.
-}
-\details{
-Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
+Creates item definitions from a model name. Scavenges definitions optionally 
+from the control stream and optionally from the definitions file. Optionally
+writes the result to the definitions file. Always returns a data.frame with 
+at least the column 'item' but possibly no rows.
 }
 \examples{
 library(magrittr)

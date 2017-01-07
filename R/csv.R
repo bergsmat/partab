@@ -3,7 +3,7 @@
 #' Reads or writes CSV files in a standard way.
 #' @param x object
 #' @param ... passed arguments
-#' @export
+
 as.csv <- function(x,...)UseMethod('as.csv')
 
 #' Treat Character as CSV
@@ -16,7 +16,7 @@ as.csv <- function(x,...)UseMethod('as.csv')
 #' @param na.strings passed to read.csv
 #' @param strip.white passed to read.csv
 #' @return data.frame
-#' @export
+
 as.csv.character <- function(x,as.is=TRUE,na.strings=c('',' ','.'),strip.white=T,...){
   stopifnot(length(x)==1)
   stopifnot(file.exists(x))
@@ -34,7 +34,7 @@ as.csv.character <- function(x,as.is=TRUE,na.strings=c('',' ','.'),strip.white=T
 #' @param quote passed to write.csv
 #' @param row.names passed to write.csv
 #' @return invisible data.frame (x)
-#' @export
+
 as.csv.data.frame <- function(x, file, na='.',quote=FALSE,row.names=FALSE,...){
     comma <- sapply(x,function(col)any(col %contains% ','))
   nms <- names(comma)[comma]

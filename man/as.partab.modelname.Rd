@@ -7,9 +7,8 @@
 \usage{
 \method{as.partab}{modelname}(x, verbose = FALSE, lo = "5", hi = "95",
   project = if (is.null(opt)) getwd() else opt, opt = getOption("project"),
-  rundir = file.path(project, x), ctlmeta = TRUE,
-  metafile = file.path(rundir, paste0(x, ".def")),
-  xmlfile = file.path(rundir, paste0(x, ".xml")),
+  rundir = file.path(project, x), metafile = file.path(rundir, paste0(x,
+  ".def")), xmlfile = file.path(rundir, paste0(x, ".xml")),
   ctlfile = file.path(rundir, paste0(x, ".ctl")), bootcsv,
   strip.namespace = TRUE, skip = 28, check.names = FALSE, digits = 3,
   ci = TRUE, open = "(", close = ")", sep = ", ", format = TRUE,
@@ -30,8 +29,6 @@
 \item{opt}{alternative argument for setting project}
 
 \item{rundir}{specific model directory}
-
-\item{ctlmeta}{whether to look for parameter metadata in the control stream}
 
 \item{metafile}{optional metadata for parameter table (see also: fields)}
 

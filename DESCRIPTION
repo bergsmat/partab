@@ -1,7 +1,7 @@
 Package: partab
 Type: Package
 Title: Make a Parameter Table from NONMEM Output
-Version: 0.2.2
+Version: 0.3.0
 Date: 2016-12-27
 Author: Tim Bergsma
 Maintainer: Tim Bergsma <bergsmat@gmail.com>

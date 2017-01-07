@@ -315,6 +315,8 @@ as.itemComments.nmctl <- function(x,fields=c('symbol','unit','label'),expected=c
   col <- fields[[1]]
   dat <- sub('^([^;]*);?(.*)$','\\1',x)
   rem <- sub('^([^;]*);?(.*)$','\\2',x)
+  dat <- sub('^ +','',dat)
+  dat <- sub(' +$','',dat)
   out <- data.frame(stringsAsFactors=F, col = dat)
   out$col[is.defined(out) & out == ''] <- na
   names(out)[names(out) == 'col'] <- col

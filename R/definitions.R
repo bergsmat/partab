@@ -39,12 +39,13 @@ as.definitions.character <- function(x,...){
   class(x) <-  'modelname'
   as.definitions(x,...)
 }
-#' Create a Item Definitions from Model Name
+#' Create Item Definitions from Model Name
 #'
-#' Creates a item definitions from a model name. Pass the project argument or set 
-#' the project option.  
+#' Creates item definitions from a model name. Scavenges definitions optionally 
+#' from the control stream and optionally from the definitions file. Optionally
+#' writes the result to the definitions file. Always returns a data.frame with 
+#' at least the column 'item' but possibly no rows. 
 #' 
-#' Normally you can just call the generic.  Suitable defaults are supplied, but much customization is supported by means of arguments documented here and in called functions.
 #' @import magrittr
 #' @import dplyr
 #' @param x a model name (numeric or character)
@@ -52,9 +53,11 @@ as.definitions.character <- function(x,...){
 #' @param project parent directory of model directories
 #' @param opt alternative argument for setting project
 #' @param rundir specific model directory
-#' @param ctlfile path to control stream
+#' @param ctlfile path to control stream (pass length-zero argument to ignore)
+#' @param metafile path to definitions file (pass length-zero argument to ignore)
 #' @param fields metadata fields to read from control stream if no metafile
-#' @param unique drop duplicate definitions
+#' @param read whether to read the definitions file
+#' @param write whether to write the definitions file
 #' @param ... passed to other functions
 #' @seealso \code{\link{as.xml_document.modelname}}
 #' @seealso \code{\link{as.bootstrap.modelname}}
@@ -66,7 +69,7 @@ as.definitions.character <- function(x,...){
 #' library(magrittr)
 #' options(project = system.file('project/model',package='partab'))
 #' 1001 %>% as.definitions
-#' @return object of class definitions, data.frame
+#' @return object of class definitions, or path to metafile if write = TRUE.
 #' @export
 as.definitions.modelname <- function(
   x,
@@ -75,16 +78,32 @@ as.definitions.modelname <- function(
   project = if(is.null(opt)) getwd() else opt, 
   rundir = file.path(project,x), 
   ctlfile = file.path(rundir,paste0(x,'.ctl')),
+  metafile = file.path(rundir,paste0(x,'.def')),
   fields = c('symbol','label','unit'),
-  unique = TRUE,
+  read = length(metafile) == 1,
+  write = FALSE,
   ...
 ){
-  if(verbose)message('searching ',ctlfile)
-  y <- x %>%
-      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
-      as.itemComments(fields=fields,...) 
-  if(unique) y <- y[!duplicated(y),]
-  class(y) <- union('definitions', class(y))
+  m1 <- data.frame(item=character(0))
+  m2 <- data.frame(item=character(0))
   
+  if(length(ctlfile) == 1 & file.exists(ctlfile)){
+    if(verbose)message('searching ',ctlfile)
+    m1 <- x %>%
+      as.nmctl(verbose=verbose,rundir = rundir,ctlfile=ctlfile,...) %>%
+      as.itemComments(fields=fields,...)
+  }
+  if(length(metafile) == 1 & file.exists(metafile) & read){
+    if(verbose)message('searching ',metafile)
+    m2 <- metafile %>% as.csv(...)
+  }
+  y <- full_join(m1,m2,by = intersect(names(m1),names(m2)))
+  dups <- y$item[duplicated(y$item)]
+  if(length(dups))warning('found conflicting metadata for ',paste(dups,collapse=', '))
+  class(y) <- union('definitions', class(y))
+  if(write & length(metafile) == 1) {
+    y %>% as.csv(metafile,...)
+    return(metafile)
+  }
   y
 }
