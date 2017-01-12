@@ -1,3 +1,5 @@
+globalVariables(c('item','.','parameter','estimate','se'))
+
 #' Coerce to NONMEM Control Object
 #' 
 #' Coerces to NONMEM control stream object.
@@ -64,7 +66,7 @@ function(
 ){
   if(length(x) == 1){
     class(x) <- if(file.exists(x)) 'filename' else 'modelname'
-      return(as.nmctl(x,...))
+      return(as.nmctl(x,parse=parse,...))
   }
 	flag <- grepl(pattern,x)
 	nms <- sub(pattern,head,x)
@@ -193,7 +195,7 @@ function(x, file='data',ncolumns=1,append=FALSE, sep=" ",...){
 #' @describeIn as.nmctl filename method
 #' @export 
 
-as.nmctl.filename <- function(x, parse, ...)read.nmctl(con=x,parse=parse,...)
+as.nmctl.filename <- function(x, parse=FALSE, ...)read.nmctl(con=x,parse=parse,...)
 
 #' Convert Modelname to nmctl
 #' 
@@ -358,13 +360,15 @@ as.itemList.character <- function(x,...){
   sets <- sub(' *;.*','',x) # rm first semicolon, any preceding spaces, and all following
   comment <- sub('^[^;]*;','',x) # select only material following the first semicolon
   comment[comment == x] <- '' # if pattern not found
-  stopifnot(length(sets) == length(comment))
-  sets <- strsplit(sets,c(' ',','))
-  sets <- lapply(sets,as.list)
-  for(i in 1:length(sets)){
-    com <- comment[[i]]
-    len <- length(sets[[i]])
-    attr(sets[[i]][[len]],'comment') <- com
+  stopifnot(length(sets) == length(comment)) # one comment per set, even if blank
+  sets <- strsplit(sets,c(' ',',')) # sets is now a list of character vectors, possibly length one
+  sets <- lapply(sets,as.list) # sets is now a list of lists of character vectors
+  for(i in seq_along(sets)){ # for each list of lists of character vectors
+    com <- comment[[i]]     # the relevant comment
+    len <- length(sets[[i]])# the element on which to place the comment
+    for(j in seq_along(sets[[i]])){ # assign each element of each set
+      attr(sets[[i]][[j]],'comment') <- if(j == len) com else '' # blank, or comment for last element
+    }
   }
   sets <- do.call(c,sets)
   class(sets) <- c('itemList','list')

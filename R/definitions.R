@@ -84,8 +84,8 @@ as.definitions.modelname <- function(
   write = FALSE,
   ...
 ){
-  m1 <- data.frame(item=character(0))
-  m2 <- data.frame(item=character(0))
+  m1 <- data.frame(item=character(0),stringsAsFactors=FALSE)
+  m2 <- data.frame(item=character(0),stringsAsFactors=FALSE)
   
   if(length(ctlfile) == 1 & file.exists(ctlfile)){
     if(verbose)message('searching ',ctlfile)

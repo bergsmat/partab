@@ -343,7 +343,7 @@ fixed.initList <- function(x,...)sapply(x,fixed)
 .initLineNum <- function(x){
   newline <- x=='\n'
   #I am the first character in a line if I follow a newline, or if I am the veryfirst character.
-  frst <- prev(newline)
+  frst <- lag(newline)
   frst[is.na(frst)] <- TRUE
   linenum <- cumsum(frst)
   linenum
@@ -461,7 +461,7 @@ tweak <- function(x,...)UseMethod('tweak')
 #' @export
 #' @family tweak
 tweak.init <- function(x,sd=0.13,digits=3,...){
-	scale <- rnorm(1,mean=1,sd=sd)
+	scale <- stats::rnorm(1,mean=1,sd=sd)
 	y <- x$init * scale
 	y <- signif(y,digits=digits)
 	if(y < x$low | y > x$up) return(tweak.init(x,sd=sd,digits=digits,...))

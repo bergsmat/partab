@@ -1,3 +1,5 @@
+globalVariables(c('symbol','spread','value'))
+
 #' Create Model Parameter Table in Project Context
 #'
 #' Creates a model parameter table in project context.
