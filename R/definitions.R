@@ -98,6 +98,7 @@ as.definitions.modelname <- function(
     m2 <- metafile %>% as.csv(...)
   }
   y <- full_join(m1,m2,by = intersect(names(m1),names(m2)))
+  y <- unique(y)
   dups <- y$item[duplicated(y$item)]
   if(length(dups))warning('found conflicting metadata for ',paste(dups,collapse=', '))
   class(y) <- union('definitions', class(y))

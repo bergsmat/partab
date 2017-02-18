@@ -12,7 +12,7 @@ as.nmctl(x, ...)
 \method{as.nmctl}{character}(x, pattern = "^ *\\\\$([^ ]+)( .*)?$",
   head = "\\\\1", tail = "\\\\2", parse = FALSE, ...)
 
-\method{as.nmctl}{filename}(x, parse, ...)
+\method{as.nmctl}{filename}(x, parse = FALSE, ...)
 
 \method{as.nmctl}{modelname}(x, verbose = TRUE, project = if (is.null(opt))
   getwd() else opt, opt = getOption("project"), rundir = file.path(project,
